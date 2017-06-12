@@ -15,6 +15,42 @@
     $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 ?>
 
+<?php 
+         
+        if(isset($_POST["submitNewSkillFieldName"])){
+            $selectedSkill = $_POST["selected"];
+            $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
+             
+            // Query for editing a skill name 
+            $_sql7 = "UPDATE skill_field "; 
+            $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
+            $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
+
+            $result3 = $mysqli->query($_sql7);
+            $success = true; 
+        }
+        
+        if(isset($_POST["deleteSkill"])){
+            $selectedSkill1 = $_POST["selected"];
+            // Query for deleting a skill name 
+            $_sql8 = "DELETE from skill_field "; 
+            $_sql8.= "WHERE skill_field_name = '".$selectedSkill1."'";
+
+            $result5 = $mysqli->query($_sql8);
+            $deleteSuccess = true; 
+        }
+
+        if(isset($_POST['submit'])){
+            $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
+            
+            $sql4 = "INSERT INTO skill_field (skill_field_name) ";
+            $sql4 .= "values ('".$skillFieldName."')";
+
+            $resultSkill = $mysqli->query($sql4);
+            $skillFieldAdded = true;
+        }
+    ?>
+
 
 
 <!DOCTYPE html>
@@ -44,22 +80,10 @@
     <br>
 <center>
     
-    
-    <?php
-        if(isset($_POST['submit'])){
-            $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
-            
-            $sql4 = "INSERT INTO skill_field (skill_field_name) ";
-            $sql4 .= "values ('".$skillFieldName."')";
-
-            $resultSkill = $mysqli->query($sql4);
-            $skillFieldAdded = true;
-        }
-    ?>
     <form action="skill_fields.php" method="post">
         <h1>Add a new Skill Field</h1><br>
-        <h4><b>Skill Field Name:</b></h4><input type="text" name="skillfield" required><br>
-        
+        <input type="text" name="skillfield" placeholder="Enter the New Skill Field Name here" required>
+        <input class="btn btn-success" style="margin-left:0px;"  type="submit" value="Submit" name="submit">
         <?php
             if(isset($skillFieldAdded)){
                 if($skillFieldAdded){
@@ -69,31 +93,12 @@
                 }
             }
         ?>
-        <input class="btn btn-success" style="margin-left:160px;"  type="submit" value="Submit" name="submit">
+        
     </form>
     
 
-    
-    
-    <?php 
-         if(isset($_POST["submitNewSkillFieldName"])){
-            $selectedSkill = $_POST["selected"];
-            $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
-             
-            // Query for editing a skill name 
-            $_sql7 = "UPDATE skill_field "; 
-            $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
-            $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
-
-            $result3 = $mysqli->query($_sql7);
-            $success = true; 
-        }
-    ?>
-    
-    <br><br><br>
-    <h1>Edit a current Skill Field</h1><br>
-    <h4><b>Choose a Skill Field</b></h4>
-    
+    <br><br>
+    <h1>Edit a current Skill Field</h1><br>    
     <br><br>
     <form action="skill_fields.php" method="post">
         <?php 
@@ -106,17 +111,51 @@
             }
             echo "<\select>";
         ?>
-        <input type="text" name="newSkillFieldName" placeholder="Enter the new name here" required><br>
+        <input type="text" name="newSkillFieldName" placeholder="Enter the edited name" required>
+        
+        <input class="btn btn-success"   type="submit" value="Submit" name="submitNewSkillFieldName">
+        
+        <!--Success Message  -->
         <?php
             if(isset($success)){
                 if($success){
                     echo "<div class=\"alert alert-success\">
-                            <strong>Success!</strong> The field Name has been modified.
+                            <strong>Success!</strong> The skill name has been modified.<br> Previous Name: <strong>".$selectedSkill."</strong> New Name: <strong>".$newSkillName."</strong>
                         </div>";
                 }
             }
         ?>
-        <input class="btn btn-success" style="margin-left:420px;"  type="submit" value="Submit" name="submitNewSkillFieldName">
+    </form>
+    
+    
+    <!-- Delete a skill field -->
+    <br><br>
+    <h1>Delete a Skill Field</h1>
+    <br>
+    <form action="skill_fields.php" method="post">
+        
+        <?php 
+            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            $result2 = $mysqli->query($sql2); 
+           
+            echo "<select name=\"selected\">";
+            while($row = $result2->fetch_assoc()){
+                print("<option>".$row['skill_field_name']."</option>");
+            }
+            echo "<\select>";
+        ?>
+        
+        <input class="btn btn-danger"  type="submit" value="DELETE" name="deleteSkill">
+        
+        <?php
+            if(isset($deleteSuccess)){
+                if($deleteSuccess){
+                    echo "<div class=\"alert alert-danger\">
+                            <strong>Success!</strong> You have deleted a Skill Field. Affected Skill Field: <strong>".$selectedSkill1."</strong>
+                        </div>";
+                }
+            }
+        ?>
     </form>
 </center>
     <br><br>
