@@ -53,39 +53,70 @@
             $sql4 .= "values ('".$skillFieldName."')";
 
             $resultSkill = $mysqli->query($sql4);
+            $skillFieldAdded = true;
         }
     ?>
     <form action="skill_fields.php" method="post">
         <h1>Add a new Skill Field</h1><br>
-        <h4><b>Skill Field Name:</b></h4><input type="text" name="skillfield"><br>
+        <h4><b>Skill Field Name:</b></h4><input type="text" name="skillfield" required><br>
+        
+        <?php
+            if(isset($skillFieldAdded)){
+                if($skillFieldAdded){
+                    echo "<div class=\"alert alert-success\">
+                            <strong>Success!</strong> You have added a skill field. Skill Field Name: <strong>".$skillFieldName."</strong>
+                        </div>";
+                }
+            }
+        ?>
         <input class="btn btn-success" style="margin-left:160px;"  type="submit" value="Submit" name="submit">
     </form>
     
+
     
-    
-    
-  <!--PHP COde for Selecting Categories -->
     
     <?php 
-            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
-            $result2 = $mysqli->query($sql2); 
-    ?>  
+         if(isset($_POST["submitNewSkillFieldName"])){
+            $selectedSkill = $_POST["selected"];
+            $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
+             
+            // Query for editing a skill name 
+            $_sql7 = "UPDATE skill_field "; 
+            $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
+            $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
+
+            $result3 = $mysqli->query($_sql7);
+            $success = true; 
+        }
+    ?>
+    
     <br><br><br>
     <h1>Edit a current Skill Field</h1><br>
     <h4><b>Choose a Skill Field</b></h4>
-    <?php 
-        echo "<select>";
-
-        while($row = $result2->fetch_assoc()){
-            print("<option>".$row['skill_field_name']."</option>");
-        }
-        
-        echo "<\select>";
-    ?>
+    
     <br><br>
     <form action="skill_fields.php" method="post">
-        <h4><b>New Name:</b></h4><input type="text" ><br>
-        <input class="btn btn-success" style="margin-left:160px;"  type="submit" value="Submit">
+        <?php 
+            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            $result2 = $mysqli->query($sql2); 
+           
+            echo "<select name=\"selected\">";
+            while($row = $result2->fetch_assoc()){
+                print("<option>".$row['skill_field_name']."</option>");
+            }
+            echo "<\select>";
+        ?>
+        <input type="text" name="newSkillFieldName" placeholder="Enter the new name here" required><br>
+        <?php
+            if(isset($success)){
+                if($success){
+                    echo "<div class=\"alert alert-success\">
+                            <strong>Success!</strong> The field Name has been modified.
+                        </div>";
+                }
+            }
+        ?>
+        <input class="btn btn-success" style="margin-left:420px;"  type="submit" value="Submit" name="submitNewSkillFieldName">
     </form>
 </center>
     <br><br>
