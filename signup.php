@@ -2,13 +2,10 @@
     session_start();
     
     $_SESSION["message"]="Welcome";
+?>
 
-    define("DB_HOST","localhost");
-    define("DB_USER","root");
-    define("DB_PASS","");
-    define("DB_NAME","ocm");
-
-    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+<?php
+    require_once("includes/connect.php");   //Database connection
 ?>
 
 <!-- Form validation through PHP -->
@@ -70,19 +67,34 @@
         }
     }
         
-    //SQL Activities
+    //SQL Activities for creating new user
     $_sql = "INSERT INTO user "; 
     $_sql .="(full_name, email, password) ";
     $_sql .="VALUES ('$fullname', '$email', '$password') ";
     
+    $processedEmail = str_replace('@','',$email);    
+    $processedEmail = str_replace('.','',$processedEmail);  
+        
+    //SQL query for creating information table of user
+    $_sqlTable = "CREATE TABLE $processedEmail ( ";
+    $_sqlTable .="first_name varchar (255) NOT NULL, ";
+    $_sqlTable .="last_name varchar (255) NOT NULL, ";
+    $_sqlTable .="email varchar (255) NOT NULL, ";
+    $_sqlTable .="skill_field varchar (255) NOT NULL, ";
+    $_sqlTable .="address varchar (255), ";
+    $_sqlTable .="website varchar (255), ";    
+    $_sqlTable .="linkedin varchar (255), ";
+    $_sqlTable .="hp_no varchar (255), ";    
+    $_sqlTable .="twitter_fb varchar (255), ";    
+    $_sqlTable .="company varchar (255)";
+    $_sqlTable .=")";    
     
     
-        
-        
-        
-        
     if($loginAble){  //Checks whether the form matches all validation.
         if($mysqli->query($_sql)===true){
+            //Creating information table for New user
+            $create_table = $mysqli->query($_sqlTable);
+            
             $message = "Registration Successful!";
         }else{
             echo "Not connected. Error: ".$mysqli->error;
@@ -111,26 +123,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 		<!--webfonts-->
-		<link href="https://fonts.googleapis.com/css?family=Exo|Maven+Pro" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+        
 		<!--//webfonts-->
 </head>
 <body>
 <!-----start-main---->
 <div class="main">
 <div class="login-form">
-<h1>Sign Up </h1>
+<h1 style="font-family: 'Slabo 27px', serif;">Sign Up </h1>
 
 <form action="signup.php" method="post">
-        <h2 style="font-size:25px;">Full Name:</h2>
+        <h2 style="font-size:25px;">FULL NAME:</h2>
         <input type="text" class="text" value="<?php echo $fullname; ?>" name="fullname" required>
 
-        <h2 style="font-size:25px;">Email:</h2>
+        <h2 style="font-size:25px;">EMAIL:</h2>
         <input type="text" class="text" value="<?php echo $email; ?>"  name="email" required>
 
-        <h2 style="font-size:25px;">Password:</h2>
+        <h2 style="font-size:25px;">PASSWORD:</h2>
         <input type="password" value="" name="password" required>
         
-        <h2 style="font-size:25px;">Confirm Password:</h2>
+        <h2 style="font-size:25px;">CONFIRM PASSWORD:</h2>
         <input type="password" value="" name="password1" required>
     
         <p style="color:red;"><b><?php echo $message; ?></b></p>	<!--All Common Error Message Here -->

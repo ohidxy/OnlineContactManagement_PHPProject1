@@ -6,6 +6,12 @@
         exit;
     }
 ?>
+
+<?php
+    require_once("includes/session_timeout.php");   //Session Time Out
+    require_once("includes/connect.php");   //Database connection
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,10 +24,12 @@
   <link href="css/dashboard.css" rel='stylesheet' type='text/css' />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
 </head>
-<body style="">
+<body>
 <!-- Navigation Container -->
-<div class="container" style="width:1000px;">
+<div class="container" style="width:1000px; border-style: solid;
+    border-width: 3px; border-radius:10px; margin-top:10px;">
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
   <ul class="nav nav-pills nav-justified">
@@ -35,19 +43,18 @@
 
   <!-- Filter Option for Data Field starts-->
   <p><b>Filtered By:</b></p>
-  <select>
-      <option value="volvo">JS Developer</option>
-      <option value="saab">Software Engineer</option>
-      <option value="mercedes">Python Developer</option>
-      <option value="audi">Audi</option>
-  </select>   
+  <?php 
+            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            $result2 = $mysqli->query($sql2); 
+           
+            echo "<select name=\"selected\">";
+            while($row = $result2->fetch_assoc()){
+                print("<option>".$row['skill_field_name']."</option>");
+            }
+            echo "<\select>";
+    ?>  
 
-  <select>
-      <option value="volvo">Bangladesh</option>
-      <option value="saab">India</option>
-      <option value="mercedes">Malaysia</option>
-      <option value="audi">China</option>
-  </select>  
+ 
  <!-- Filter Option for Data Field Ends-->
 
   <!--Search Box -->  
@@ -77,7 +84,7 @@
         <td>New York</td>
         <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-primary">View</button>
+              <button type="button"  class="btn btn-primary">View</button>
               <button type="button" class="btn btn-primary">Edit</button>
             </div>
         </td>

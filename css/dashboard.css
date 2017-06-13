@@ -1,5 +1,6 @@
 body{
     background:#E7E7E7;
+    font-family: 'Slabo 27px', serif;
 }
 
 a{
@@ -7,18 +8,23 @@ a{
     margin-right: 10px;
     color: white;
     font-size: 18px;
+    font-family: 'Slabo 27px', serif;
     font-style: bold;
 }
 
-select{
-    width: 250px;
-    margin-right: 20px;
-    padding: 3px;
-    border-radius: 3px;
+h1{
+    font-family: 'Slabo 27px', serif;
 }
 
-input[type=text] {
+select, input[type=text] {
+    height: 30px;
+    font-size: 17px;
+    text-align: left;
+    padding-left: 5px;
     border-radius: 3px;
+    border:2px;
+    border-style: solid;
+    border-color: #A9A9A9;
     width: 250px;
     margin-right: 20px;
     margin-bottom: 10px;
@@ -31,14 +37,8 @@ input[type=text] {
     display: block;
 }
 
-input[type="text"]:hover, input[type="password"]:hover{
- 	border:1px solid #949494;
-	transition:0.5s;
-	-webkit-transition:0.5s;
-	-moz-transition:0.5s;
-	-o-transition:0.5s;
-	-ms-transition:	0.5s;
- 	
+select:hover, input[type="text"]:hover, input[type="password"]:hover{
+ 	border-color: black;
  }
 
 

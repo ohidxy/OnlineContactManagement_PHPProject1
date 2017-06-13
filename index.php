@@ -1,12 +1,9 @@
 <?php
     session_start();
+?>
 
-    define("DB_HOST","localhost");
-    define("DB_USER","root");
-    define("DB_PASS","");
-    define("DB_NAME","ocm");
-
-    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+<?php
+    require_once("includes/connect.php");   //Database connection
 ?>
 
 <?php
@@ -76,7 +73,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 		<!--webfonts-->
-		<link href="https://fonts.googleapis.com/css?family=Exo|Maven+Pro" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
 		<!--//webfonts-->
 </head>
 <body>

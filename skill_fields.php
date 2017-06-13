@@ -7,12 +7,8 @@
     }
 ?>
 <?php
-    define("DB_HOST","localhost");
-    define("DB_USER","root");
-    define("DB_PASS","");
-    define("DB_NAME","ocm");
-
-    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+    require_once("includes/session_timeout.php");   //Session Time Out
+    require_once("includes/connect.php");   //Database connection
 ?>
 
 <?php 
@@ -65,10 +61,12 @@
   <link href="css/dashboard.css" rel='stylesheet' type='text/css' />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
 </head>
-<body style="">
+<body>
 <!-- Navigation Container -->
-<div class="container" style="width:1000px;">
+<div class="container" style="width:1000px; border-style: solid;
+    border-width: 3px; border-radius:10px;margin-top:10px;" >
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
   <ul class="nav nav-pills nav-justified">
@@ -83,7 +81,7 @@
     <form action="skill_fields.php" method="post">
         <h1>Add a new Skill Field</h1><br>
         <input type="text" name="skillfield" placeholder="Enter the New Skill Field Name here" required>
-        <input class="btn btn-success" style="margin-left:0px;"  type="submit" value="Submit" name="submit">
+        <input class="btn btn-success" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submit">
         <?php
             if(isset($skillFieldAdded)){
                 if($skillFieldAdded){
@@ -99,7 +97,7 @@
 
     <br><br>
     <h1>Edit a current Skill Field</h1><br>    
-    <br><br>
+    <br>
     <form action="skill_fields.php" method="post">
         <?php 
             $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
@@ -113,7 +111,7 @@
         ?>
         <input type="text" name="newSkillFieldName" placeholder="Enter the edited name" required>
         
-        <input class="btn btn-success"   type="submit" value="Submit" name="submitNewSkillFieldName">
+        <input class="btn btn-success"  style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submitNewSkillFieldName">
         
         <!--Success Message  -->
         <?php
@@ -145,7 +143,7 @@
             echo "<\select>";
         ?>
         
-        <input class="btn btn-danger"  type="submit" value="DELETE" name="deleteSkill">
+        <input class="btn btn-danger" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="DELETE" name="deleteSkill">
         
         <?php
             if(isset($deleteSuccess)){
