@@ -5,6 +5,11 @@
         header("location:index.php");   
         exit;
     }
+
+    $processedEmail = $_SESSION["email"];
+    $processedEmail = str_replace("@","",$processedEmail);
+    $processedEmail = str_replace(".","",$processedEmail);
+    $skillFieldTable = $processedEmail."_skill";
 ?>
 
 <?php
@@ -44,7 +49,7 @@
   <!-- Filter Option for Data Field starts-->
   <p><b>Filtered By:</b></p>
   <?php 
-            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";
@@ -80,9 +85,7 @@
 		<!-- PHP Code for showing row data -->	
       <?php
 		
-		$processedEmail = $_SESSION["email"];
-        $processedEmail = str_replace("@","",$processedEmail);
-        $processedEmail = str_replace(".","",$processedEmail);
+		
 		
 		//SQL for selecting all the contact information
 		$sqlC = "SELECT * FROM $processedEmail";

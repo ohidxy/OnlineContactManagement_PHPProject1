@@ -89,11 +89,24 @@
     $_sqlTable .="company varchar (255)";
     $_sqlTable .=")";    
     
+    //SQL Query for creating skill field table of user
+        
+    $_sqlSkillTable = "CREATE TABLE ".$processedEmail."_skill (";
+    $_sqlSkillTable.= "skill_field_name varchar (255) NOT NULL)";    
     
+        
+    $_sqlDefaultSkills = "INSERT INTO ".$processedEmail."_skill (";
+    $_sqlDefaultSkills .= "skill_field_name) VALUES ('PHP Developer'), ('C# Developer'), ('Python Developer'), ('Database Expert'), ('JavaScript Developer'), ('Java Developer')";
+    
+        
     if($loginAble){  //Checks whether the form matches all validation.
         if($mysqli->query($_sql)===true){
             //Creating information table for New user
             $create_table = $mysqli->query($_sqlTable);
+            //Creating table for skill fields
+            $create_skilltable = $mysqli->query($_sqlSkillTable);
+            //Adding Default Skills to skill fields
+            $create_defaultSkills = $mysqli->query($_sqlDefaultSkills);
             
             $message = "Registration Successful!";
         }else{

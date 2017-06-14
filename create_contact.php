@@ -6,6 +6,11 @@
         header("location:index.php");
         exit;
     }
+
+    $processedEmail = $_SESSION["email"];
+    $processedEmail = str_replace("@","",$processedEmail);
+    $processedEmail = str_replace(".","",$processedEmail);
+    $skillFieldTable = $processedEmail."_skill";
 ?>
 
 <?php
@@ -41,9 +46,7 @@
         
         /*echo $firstName."<br>".$lastName."<br>".$email."<br>".$skillField."<br>".$address."<br>".$website."<br>".$linkedin."<br>".$hpNo."<br>".$twtnfb."<br>".$company;*/
         
-        $processedEmail = $_SESSION["email"];
-        $processedEmail = str_replace("@","",$processedEmail);
-        $processedEmail = str_replace(".","",$processedEmail);
+        
         
         $createSql = "INSERT INTO $processedEmail ";
         $createSql.= "(first_name, last_name, email, skill_field, address, website, linkedin, hp_no, twitter_fb, company) ";
@@ -109,8 +112,10 @@
         
         <!--Skill Field -->
         <!--PHP COde for Selecting Categories -->
+        
         <?php 
-            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            
+            $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";

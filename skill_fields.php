@@ -12,13 +12,18 @@
 ?>
 
 <?php 
-         
+        $processedEmail = $_SESSION["email"];
+        $processedEmail = str_replace("@","",$processedEmail);
+        $processedEmail = str_replace(".","",$processedEmail);
+        
+        $skillFieldTable = $processedEmail."_skill";
+
         if(isset($_POST["submitNewSkillFieldName"])){
             $selectedSkill = $_POST["selected"];
             $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
              
             // Query for editing a skill name 
-            $_sql7 = "UPDATE skill_field "; 
+            $_sql7 = "UPDATE $skillFieldTable "; 
             $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
             $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
 
@@ -29,7 +34,7 @@
         if(isset($_POST["deleteSkill"])){
             $selectedSkill1 = $_POST["selected"];
             // Query for deleting a skill name 
-            $_sql8 = "DELETE from skill_field "; 
+            $_sql8 = "DELETE from $skillFieldTable "; 
             $_sql8.= "WHERE skill_field_name = '".$selectedSkill1."'";
 
             $result5 = $mysqli->query($_sql8);
@@ -39,7 +44,7 @@
         if(isset($_POST['submit'])){
             $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
             
-            $sql4 = "INSERT INTO skill_field (skill_field_name) ";
+            $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
             $sql4 .= "values ('".$skillFieldName."')";
 
             $resultSkill = $mysqli->query($sql4);
@@ -100,7 +105,7 @@
     <br>
     <form action="skill_fields.php" method="post">
         <?php 
-            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";
@@ -133,7 +138,7 @@
     <form action="skill_fields.php" method="post">
         
         <?php 
-            $sql2 = "SELECT * from skill_field ORDER BY skill_field_name ASC";
+            $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";
