@@ -44,13 +44,11 @@
             $_SESSION["fullname"] = $row["full_name"];
             header('Location: view_contact.php');
             exit;
-        }else{
-            $userFound = false;
         }
     }
     
     //showing error when user information isn't matched with database
-    if(!$userFound){
+    if(!isset($userFound)){
         $message .= "Username or Password doesn't match!";
     }
         

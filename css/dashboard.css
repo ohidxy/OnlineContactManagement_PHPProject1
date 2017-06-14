@@ -12,6 +12,14 @@ a{
     font-style: bold;
 }
 
+#myTable td{
+    font-size: 18px; padding-top: 12px;
+}
+
+.highlight
+{
+background-color:yellow;
+}
 
 h1{
     font-family: 'Slabo 27px', serif;

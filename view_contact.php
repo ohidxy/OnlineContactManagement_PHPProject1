@@ -53,6 +53,7 @@
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";
+            echo "<option>None</option>";
             while($row = $result2->fetch_assoc()){
                 print("<option>".$row['skill_field_name']."</option>");
             }
@@ -60,16 +61,38 @@
     ?>  
 
  
- <!-- Filter Option for Data Field Ends-->
-
+ <!-- Search by name option for Data Field starts-->
+    <script>
+    function myFunction() {
+      // Declare variables 
+      var input, filter, table, tr, td, i, index,innerHTML;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];   //Search for column index 1
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        } 
+      }
+    }
+    </script>
   <!--Search Box -->  
-  <input type="text" name="search" placeholder="Search..">  
+  <input style="float:right;" type="text" id="myInput" onkeyup="myFunction()" name="search" placeholder="Search by name..">  
 
+    <!---------------------------------- -->
     
   
     <!-- View Contact Data Table Starts -->
   <div class="table-responsive"><br/>           
-  <table class="table" align="center">
+  <table class="table" align="center" id="myTable">
     <thead>
       <tr style="font-size:18px;">
         <th>#</th>
@@ -84,23 +107,18 @@
 	
 		<!-- PHP Code for showing row data -->	
       <?php
-		
-		
-		
 		//SQL for selecting all the contact information
 		$sqlC = "SELECT * FROM $processedEmail";
 	    $querySQLC = $mysqli->query($sqlC);
 		
 		
-		
-		
 		while($row = $querySQLC->fetch_assoc()){
 			$html = "<tr>";
-			$html .="<td style=\"font-size:18px;  padding-top:12px;\">-</td>";
-			$html .="<td style=\"font-size:18px; width:250px; padding-top:12px;\">".$row["first_name"]." ".$row["last_name"]."</td>";
-			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["email"]."</td>";
-			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["hp_no"]."</td>";
-			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["skill_field"]."</td>";
+			$html .="<td>-</td>";
+			$html .="<td>".$row["first_name"]." ".$row["last_name"]."</td>";
+			$html .="<td>".$row["email"]."</td>";
+			$html .="<td>".$row["hp_no"]."</td>";
+			$html .="<td>".$row["skill_field"]."</td>";
 			
 			$html .='<td>
 				<div class="btn-group">

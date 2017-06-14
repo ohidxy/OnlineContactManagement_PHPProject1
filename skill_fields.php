@@ -85,7 +85,7 @@
     
     <form action="skill_fields.php" method="post">
         <h1>Add a new Skill Field</h1><br>
-        <input type="text" name="skillfield" placeholder="Enter the New Skill Field Name here" required>
+        <input type="text" name="skillfield" placeholder="Enter a new skill field here...." required>
         <input class="btn btn-success" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submit">
         <?php
             if(isset($skillFieldAdded)){
@@ -102,7 +102,7 @@
 
     <br><br>
     <h1>Edit a current Skill Field</h1><br>    
-    <br>
+
     <form action="skill_fields.php" method="post">
         <?php 
             $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
@@ -114,7 +114,7 @@
             }
             echo "<\select>";
         ?>
-        <input type="text" name="newSkillFieldName" placeholder="Enter the edited name" required>
+        <input type="text" name="newSkillFieldName" placeholder="Edit the skill field...." required>
         
         <input class="btn btn-success"  style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submitNewSkillFieldName">
         
