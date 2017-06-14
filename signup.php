@@ -133,7 +133,7 @@
 <div class="login-form">
 <h1 style="font-family: 'Slabo 27px', serif;">Sign Up </h1>
 
-<form action="signup.php" method="post">
+<form action="signup.php" method="post" >
         <h2 style="font-size:25px;">FULL NAME:</h2>
         <input type="text" class="text" value="<?php echo $fullname; ?>" name="fullname" required>
 

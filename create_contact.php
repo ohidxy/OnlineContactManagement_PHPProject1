@@ -62,6 +62,7 @@
         
         $processSql = $mysqli->query($createSql);
         
+		$addSuccess = true; //For successful Add Message
         if(!$processSql){
             echo "SQL Error during creating table";
         }
@@ -126,9 +127,18 @@
         <input placeholder="Twitter/FB URL" type="text" name="twtnfb">
         <input placeholder="Company" type="text" name="company">
 
-        
-        <input class="btn btn-success" style="float:right;margin-top:10px;margin-right:25px;width:100px;font-size:18px;" type="submit" value="Submit" name="submitCreateForm">
-    </form>
+		<?php  //Success Message
+            if(isset($addSuccess)){
+                if($addSuccess){
+                    echo "<div class=\"alert alert-success\">
+                            <strong>Success!</strong> You have added a new contact!
+                        </div>";
+                }
+            }
+        ?>
+		
+		<input class="btn btn-success" style="float:right;margin-top:0px;margin-right:25px;width:100px;font-size:18px;" type="submit" value="Submit" name="submitCreateForm">
+	</form>
      <br><br><br>
 </center>    
 </div>

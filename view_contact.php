@@ -66,7 +66,7 @@
   <div class="table-responsive"><br/>           
   <table class="table" align="center">
     <thead>
-      <tr>
+      <tr style="font-size:18px;">
         <th>#</th>
         <th>Full Name</th>
         <th>Email</th>
@@ -76,19 +76,43 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>Anna</td>
-        <td>Pitt</td>
-        <td>35</td>
-        <td>New York</td>
-        <td>
-            <div class="btn-group">
-              <button type="button"  class="btn btn-primary">View</button>
-              <button type="button" class="btn btn-primary">Edit</button>
-            </div>
-        </td>
-      </tr>
+	
+		<!-- PHP Code for showing row data -->	
+      <?php
+		
+		$processedEmail = $_SESSION["email"];
+        $processedEmail = str_replace("@","",$processedEmail);
+        $processedEmail = str_replace(".","",$processedEmail);
+		
+		//SQL for selecting all the contact information
+		$sqlC = "SELECT * FROM $processedEmail";
+	    $querySQLC = $mysqli->query($sqlC);
+		
+		
+		
+		
+		while($row = $querySQLC->fetch_assoc()){
+			$html = "<tr>";
+			$html .="<td>-</td>";
+			$html .="<td style=\"font-size:18px; width:250px; padding-top:12px;\">".$row["first_name"]." ".$row["last_name"]."</td>";
+			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["email"]."</td>";
+			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["hp_no"]."</td>";
+			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["skill_field"]."</td>";
+			
+			$html .='<td>
+				<div class="btn-group">
+				  <button type="button"  class="btn btn-primary">View</button>
+				  <button type="button" class="btn btn-primary">Edit</button>
+				</div>
+			</td>';
+		$html .="</tr>";
+			
+			print($html);
+		}
+		
+		
+	  ?>
+	  <!-- PHP Code for showing row data ends -->
     </tbody>
   </table>
   </div> 
