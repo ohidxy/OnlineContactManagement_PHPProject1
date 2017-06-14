@@ -93,7 +93,7 @@
 		
 		while($row = $querySQLC->fetch_assoc()){
 			$html = "<tr>";
-			$html .="<td>-</td>";
+			$html .="<td style=\"font-size:18px;  padding-top:12px;\">-</td>";
 			$html .="<td style=\"font-size:18px; width:250px; padding-top:12px;\">".$row["first_name"]." ".$row["last_name"]."</td>";
 			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["email"]."</td>";
 			$html .="<td style=\"font-size:18px;  padding-top:12px;\">".$row["hp_no"]."</td>";
