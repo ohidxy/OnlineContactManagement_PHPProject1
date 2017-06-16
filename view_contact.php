@@ -17,6 +17,7 @@
     require_once("includes/connect.php");   //Database connection
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,11 +122,8 @@
 			$html .="<td>".$row["skill_field"]."</td>";
 			
 			$html .='<td>
-				<div class="btn-group">
-				  <button type="button"  class="btn btn-primary">View</button>
-				  <button type="button" class="btn btn-primary">Edit</button>
-				</div>
-			</td>';
+                      <a href="contact_details.php?emailid='.$row["email"].'"  class="btn btn-info" style="background-color:#007DA5;">More</a>
+                      </td>';
 		$html .="</tr>";
 			
 			print($html);
