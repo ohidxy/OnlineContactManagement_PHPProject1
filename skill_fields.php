@@ -18,7 +18,7 @@
         
         $skillFieldTable = $processedEmail."_skill";
 
-        if(isset($_POST["submitNewSkillFieldName"])){
+        if(isset($_POST["UpdateSkillFieldName"])){
             $selectedSkill = $_POST["selected"];
             $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
              
@@ -26,8 +26,20 @@
             $_sql7 = "UPDATE $skillFieldTable "; 
             $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
             $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
-
+			
             $result3 = $mysqli->query($_sql7);
+			
+			//Query for updating in Contact Table'
+			$_sqlUpdateContactTable = "UPDATE $processedEmail ";
+			$_sqlUpdateContactTable .= "SET skill_field = '".$newSkillName."' ";
+			$_sqlUpdateContactTable .= "WHERE skill_field = '".$selectedSkill."'";
+			
+			$queryForUpdateContactTable = $mysqli->query($_sqlUpdateContactTable);
+			
+			if(!$queryForUpdateContactTable){
+				echo "Error! Updating Skill Name into Contact table has been failed!";
+			}
+			
             $success = true; 
         }
         
@@ -116,7 +128,7 @@
         ?>
         <input type="text" name="newSkillFieldName" placeholder="Edit the skill field...." required>
         
-        <input class="btn btn-success"  style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submitNewSkillFieldName">
+        <input class="btn btn-success"  style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Update" name="UpdateSkillFieldName">
         
         <!--Success Message  -->
         <?php
