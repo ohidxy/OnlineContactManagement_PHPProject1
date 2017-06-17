@@ -21,13 +21,15 @@
 <?php
     if(isset($_POST["submitCreateForm"])){
         if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
-            {
+        {
             $firstName = $mysqli->real_escape_string($_POST["firstname"]);
             $firstName = trim($firstName," ");  //Trimming WhiteSpace
-
+            $firstName = ucwords($firstName);
+            
             $lastName = $mysqli->real_escape_string($_POST["lastname"]);
             $lastName = trim($lastName," ");  //Trimming WhiteSpace
-
+            $lastName = ucwords($lastName);
+            
             $email = $mysqli->real_escape_string($_POST["email"]);
             $email = trim($email," ");  //Trimming WhiteSpace
 
@@ -49,7 +51,18 @@
             /*echo $firstName."<br>".$lastName."<br>".$email."<br>".$skillField."<br>".$address."<br>".$website."<br>".$linkedin."<br>".$hpNo."<br>".$twtnfb."<br>".$company;*/
 
 
-
+            
+            
+            ///SQL for checking if the email exists already///
+            $checkEmail = "SELECT email FROM $processedEmail WHERE email = '$email'";
+            $checkEmailQuery = $mysqli->query($checkEmail);
+            $isEmailExist = false;
+            if($mysqli->affected_rows > 0){
+                 $isEmailExist = true;
+            }
+            
+            
+            //SQL for creating new contact
             $createSql = "INSERT INTO $processedEmail ";
             $createSql.= "(first_name, last_name, email, skill_field, address, website, linkedin, hp_no, twitter_fb, company) ";
             $createSql.="value (";
@@ -64,13 +77,15 @@
             $createSql.="'$twtnfb', ";
             $createSql.="'$company'";
             $createSql.=")";
-
-            $processSql = $mysqli->query($createSql);
-
-            $addSuccess = true; //For successful Add Message
-            if(!$processSql){
-                echo "SQL Error during creating table";
+            //////////////////////////
+            $addSuccess = false;
+            if($isEmailExist === false){
+                $processSql = $mysqli->query($createSql);
+                $addSuccess = true; //For successful Add Message
+            }else{
+                $addSuccess = false;
             }
+            
         }
     }
 ?>
@@ -94,7 +109,7 @@
 </head>
 <body style="">
 <!-- Navigation Container -->
-<div class="container" style="min-height:680px;width:1000px; border-style: solid;
+<div class="container" style="min-height:680px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px; margin-bottom:50px;">
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
@@ -125,9 +140,9 @@
         <input type="hidden" name="csrf_token" value=" 
         <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>"> 
         <!--------->
-        <input placeholder="First Name (Required)" type="text" name="firstname" required>
-        <input placeholder="Last Name (Required)" type="text" name="lastname" required>
-        <input placeholder="Email (Required)" type="text" name="email" required>
+        <input placeholder="First Name (Required)" type="text" name="firstname" value ="<?php if(isset($firstName)){echo $firstName;} ?>" required>
+        <input placeholder="Last Name (Required)" type="text" name="lastname" value ="<?php if(isset($lastName)){echo $lastName;} ?>" required>
+        <input placeholder="Email (Required)" type="email" name="email" value ="<?php if(isset($email)){echo $email;} ?>" required>
         
         <!--Skill Field -->
         <!--PHP COde for Selecting Categories -->
@@ -145,12 +160,12 @@
             echo "<\select>";
         ?>
         
-        <input placeholder="Address" type="text" name="address">
-        <input placeholder="Website URL" type="text" name="website">
-        <input placeholder="LinkedIn URL" type="text" name="linkedin">
-        <input placeholder="H/P No" type="text" name="hpno">
-        <input placeholder="Twitter/FB URL" type="text" name="twtnfb">
-        <input placeholder="Company" type="text" name="company">
+        <input placeholder="Address" type="text" name="address" value ="<?php if(isset($address)){echo $address;} ?>">
+        <input placeholder="Website URL" type="text" name="website" value ="<?php if(isset($website)){echo $website;} ?>">
+        <input placeholder="LinkedIn URL" type="text" name="linkedin" value ="<?php if(isset($linkedin)){echo $linkedin;} ?>">
+        <input placeholder="H/P No" type="text" name="hpno" value ="<?php if(isset($hpNo)){echo $hpNo;} ?>">
+        <input placeholder="Twitter/FB URL" type="text" name="twtnfb" value ="<?php if(isset($twtnfb)){echo $twtnfb;} ?>">
+        <input placeholder="Company" type="text" name="company" value ="<?php if(isset($company)){echo $company;} ?>">
 
 		<?php  //Success Message
             if(isset($addSuccess)){
@@ -158,6 +173,12 @@
                     echo "<div class=\"alert alert-success\">
                             <strong>Success!</strong> You have added a new contact!
                         </div>";
+                }else if(isset($isEmailExist)){   //Email Exist Message
+                    if($isEmailExist){
+                        echo "<div class=\"alert alert-danger\">
+                            <strong>Email already exists! Please, try another email.</strong>
+                        </div>";
+                    }
                 }
             }
         ?>

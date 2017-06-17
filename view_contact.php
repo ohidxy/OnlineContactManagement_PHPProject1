@@ -34,7 +34,7 @@
 </head>
 <body>
 <!-- Navigation Container -->
-<div class="container" style="width:1000px; border-style: solid;
+<div class="container" style=" border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px;">
     <br>
     <p id="test"><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
@@ -157,13 +157,13 @@
 		while($row = $querySQLC->fetch_assoc()){
 			$html = "<tr>";
 			$html .="<td>-</td>";
-			$html .="<td>".$row["first_name"]." ".$row["last_name"]."</td>";
-			$html .="<td>".$row["email"]."</td>";
-			$html .="<td>".$row["hp_no"]."</td>";
-			$html .="<td>".$row["skill_field"]."</td>";
+			$html .="<td>".htmlspecialchars($row["first_name"])." ".htmlspecialchars($row["last_name"])."</td>";
+			$html .="<td>".htmlspecialchars($row["email"])."</td>";
+			$html .="<td>".htmlspecialchars($row["hp_no"])."</td>";
+			$html .="<td>".htmlspecialchars($row["skill_field"])."</td>";
 			
 			$html .='<td>
-                      <a href="contact_details.php?emailid='.$row["email"].'"  class="btn btn-info" style="background-color:#007DA5;">More</a>
+                      <a href="contact_details.php?emailid='.htmlspecialchars($row["email"]).'"  class="btn btn-info" style="background-color:#007DA5;">More</a>
                       </td>';
 		$html .="</tr>";
 			

@@ -23,7 +23,7 @@
             {
                 $selectedSkill = $_POST["selected"];
                 $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
-
+                $newSkillName = ucwords($newSkillName);
                 // Query for editing a skill name 
                 $_sql7 = "UPDATE $skillFieldTable "; 
                 $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
@@ -73,7 +73,7 @@
             if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
             {
                 $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
-            
+                $skillFieldName = ucwords($skillFieldName);
                 $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
                 $sql4 .= "values ('".$skillFieldName."')";
 
@@ -102,7 +102,7 @@
 </head>
 <body>
 <!-- Navigation Container -->
-<div class="container"  style="min-height:680px;width:1000px; border-style: solid;
+<div class="container"  style="min-height:680px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px; margin-bottom:50px;" >
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>

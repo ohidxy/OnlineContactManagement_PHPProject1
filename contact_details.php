@@ -114,7 +114,7 @@
 </head>
 <body>
 <!-- Navigation Container -->
-<div class="container" style="width:1000px; border-style: solid;
+<div class="container" style="min-height:680px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px;">
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
@@ -144,20 +144,20 @@
         
         ?> 
         
-        <input value="<?php echo $row["first_name"]; ?>" type="text" name="firstname" required>
-        <input value="<?php echo $row["last_name"]; ?>" type="text" name="lastname" required>
-        <input value="<?php echo $row["email"]; ?>" type="text" name="email" required>
+        <input value="<?php echo $row["first_name"]; ?>" type="text" name="firstname" placeholder="First Name" required>
+        <input value="<?php echo $row["last_name"]; ?>" type="text" name="lastname" placeholder="Last Name" required>
+        <input value="<?php echo $row["email"]; ?>" type="email" name="email" placeholder="Email" required >
         
         <!--Skill Field -->
         <!--PHP COde for Selecting Categories -->
         
         
-        <input value="<?php echo $row["address"]; ?>" type="text" name="address">
-        <input value="<?php echo $row["website"]; ?>" type="text" name="website">
-        <input value="<?php echo $row["linkedin"]; ?>" type="text" name="linkedin">
-        <input value="<?php echo $row["hp_no"]; ?>" type="text" name="hpno">
-        <input value="<?php echo $row["twitter_fb"]; ?>" type="text" name="twtnfb">
-        <input value="<?php echo $row["company"]; ?>" type="text" name="company">
+        <input value="<?php echo $row["address"]; ?>" type="text" name="address" placeholder="Adress">
+        <input value="<?php echo $row["website"]; ?>" type="text" name="website" placeholder="Website">
+        <input value="<?php echo $row["linkedin"]; ?>" type="text" name="linkedin" placeholder="LinkedIn">
+        <input value="<?php echo $row["hp_no"]; ?>" type="text" name="hpno" placeholder="H/P No">
+        <input value="<?php echo $row["twitter_fb"]; ?>" type="text" name="twtnfb" placeholder="Twitter/Facebook">
+        <input value="<?php echo $row["company"]; ?>" type="text" name="company" placeholder="Company">
         
         <?php $selectedSkill = $row["skill_field"];  } ?>   <!-- End of Find Info SQL Query -->
         
@@ -220,6 +220,6 @@
     ?>
 	
     </center>
-</div>
+</div><br><br>
 </body>
 </html>
