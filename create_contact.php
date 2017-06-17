@@ -91,19 +91,27 @@
 </head>
 <body style="">
 <!-- Navigation Container -->
-<div class="container" style="width:1000px; border-style: solid;
-    border-width: 3px; border-radius:10px; margin-top:10px;">
+<div class="container" style="min-height:680px;width:1000px; border-style: solid;
+    border-width: 3px; border-radius:10px; margin-top:10px; margin-bottom:50px;">
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
+    
   <ul class="nav nav-pills nav-justified">
     <li><a href="view_contact.php">View Contact</a></li>
     <li  class="active"><a href="create_contact.php">Create New Contact</a></li>
     <li><a href="skill_fields.php">Skill Fields</a></li>
     <li><a href="logout.php">Log Out</a></li>
   </ul>
+    <!-- Feedback and Bug Report Buttons -->
+<feedback style="margin-top:5px; float:right;">
+    <a class="btn btn-warning btn-sm" href="#">Updates</a>
+    <a class="btn btn-warning btn-sm" href="#">Bug Report</a>
+    <a class="btn btn-warning btn-sm" href="#">Feedback</a>
+</feedback>    
+
   <br>
  <center>  
-     
+     <br><br><br>
     <h1 style="margin-left:20px;">Create a New Contact</h1><br>
     <form style="width:550px;margin-left:20px;" method="post">
         <input placeholder="First Name (Required)" type="text" name="firstname" required>
@@ -119,6 +127,7 @@
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";
+			echo "<option>None</option>";
             while($row = $result2->fetch_assoc()){
                 print("<option>".$row['skill_field_name']."</option>");
             }
@@ -145,11 +154,9 @@
 		<input class="btn btn-success" style="float:right;margin-top:0px;margin-right:25px;width:100px;font-size:18px;" type="submit" value="Submit" name="submitCreateForm">
 	</form>
      <br><br><br>
-</center>    
-</div>
-
-    
-    
-    
+</center>   
+<br><br><br><br><br>
+<center>Copyright © 2017 ohid.info</center>     
+</div> 
 </body>
 </html>

@@ -45,11 +45,20 @@
         
         if(isset($_POST["deleteSkill"])){
             $selectedSkill1 = $_POST["selected"];
-            // Query for deleting a skill name 
+            // Query for deleting a skill name in Skill Table
             $_sql8 = "DELETE from $skillFieldTable "; 
             $_sql8.= "WHERE skill_field_name = '".$selectedSkill1."'";
 
             $result5 = $mysqli->query($_sql8);
+			
+			// Query for deleting a skill name in Contact Table
+            $_sql9 = "UPDATE $processedEmail "; 
+            $_sql9 .= "SET skill_field = 'None' ";
+			$_sql9 .= "WHERE skill_field = '".$selectedSkill1."'";
+
+            $result6 = $mysqli->query($_sql9);
+			
+			
             $deleteSuccess = true; 
         }
 
@@ -82,8 +91,8 @@
 </head>
 <body>
 <!-- Navigation Container -->
-<div class="container" style="width:1000px; border-style: solid;
-    border-width: 3px; border-radius:10px;margin-top:10px;" >
+<div class="container"  style="min-height:680px;width:1000px; border-style: solid;
+    border-width: 3px; border-radius:10px; margin-top:10px; margin-bottom:50px;" >
     <br>
     <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
   <ul class="nav nav-pills nav-justified">
@@ -92,7 +101,14 @@
     <li  class="active"><a href="skill_fields.php">Skill Fields</a></li>
     <li><a href="logout.php">Log Out</a></li>
   </ul>
-    <br>
+    
+    <!-- Feedback and Bug Report Buttons -->
+<feedback style="margin-top:5px; float:right;">
+    <a class="btn btn-warning btn-sm" href="#">Updates</a>
+    <a class="btn btn-warning btn-sm" href="#">Bug Report</a>
+    <a class="btn btn-warning btn-sm" href="#">Feedback</a>
+</feedback>  
+    <br><br>
 <center>
     
     <form action="skill_fields.php" method="post">
@@ -173,7 +189,11 @@
         ?>
     </form>
 </center>
-    <br><br>
+<br><br>
+
+    <!-- Footer Starts -->
+    <center>Copyright © 2017 ohid.info</center> <br>
+    <!-- Footer End -->
 </div>
 
     

@@ -167,6 +167,7 @@
             $result2 = $mysqli->query($sql2); 
            
             echo "<select name=\"selected\">";
+			echo "<option>None</option>";
             while($row = $result2->fetch_assoc()){
                 
                 if($selectedSkill===$row['skill_field_name']){

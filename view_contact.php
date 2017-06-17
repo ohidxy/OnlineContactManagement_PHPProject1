@@ -37,33 +37,76 @@
 <div class="container" style="width:1000px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px;">
     <br>
-    <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
+    <p id="test"><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
   <ul class="nav nav-pills nav-justified">
     <li class="active"><a href="view_contact.php">View Contact</a></li>
     <li><a href="create_contact.php">Create New Contact</a></li>
     <li><a href="skill_fields.php">Skill Fields</a></li>
     <li><a href="logout.php">Log Out</a></li>
   </ul>
-    <br><br>
     
+    <!-- Feedback and Bug Report Buttons -->
+<feedback style="margin-top:5px; float:right;">
+    <a class="btn btn-warning btn-sm" href="#">Updates</a>
+    <a class="btn btn-warning btn-sm" href="#">Bug Report</a>
+    <a class="btn btn-warning btn-sm" href="#">Feedback</a>
+</feedback>  
+    <br><br><br>
+    
+	
+	
+
+	
 
   <!-- Filter Option for Data Field starts-->
-  <p><b>Filtered By:</b></p>
+  <p><b>Filtered By Skill Field:</b></p>
   <?php 
             $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
-           
-            echo "<select name=\"selected\">";
-            echo "<option>None</option>";
+ 
+		   
+            echo "<form method=\"post\" action=\"view_contact.php\" onchange=\"filter()\">";
+            echo "<select id=\"sel\" name=\"selected\">";
+			echo "<option></option>";
+            echo "<option value=\"None\">None</option>";
             while($row = $result2->fetch_assoc()){
-                print("<option>".$row['skill_field_name']."</option>");
+                print("<option value='".$row["skill_field_name"]."'>".$row['skill_field_name']."</option>");
             }
             echo "<\select>";
+            
+         
+            echo "</form>";
     ?>  
-
+    
+    
+ 
  
  <!-- Search by name option for Data Field starts-->
+    
     <script>
+    //function for filtering contacts
+    function filter(){
+        var filter, table, tr, td, i, index,innerHTML;
+        var e = document.getElementById("sel");     
+        var strUser = e.options[e.selectedIndex].value;
+        filter = strUser.toUpperCase();
+        
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[4];   //Search for column index 1
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        } 
+      }
+    }    
+    //function for searching by name
     function myFunction() {
       // Declare variables 
       var input, filter, table, tr, td, i, index,innerHTML;
@@ -93,7 +136,7 @@
   
     <!-- View Contact Data Table Starts -->
   <div class="table-responsive"><br/>           
-  <table class="table" align="center" id="myTable">
+  <table id="myTable" class="table" align="center" id="myTable">
     <thead>
       <tr style="font-size:18px;">
         <th>#</th>
@@ -136,7 +179,9 @@
   </table>
   </div> 
     <!-- View Contact Data Table Ends --> 
-    
+  <br><br><br><br><br>
+<center>Copyright © 2017 ohid.info</center>   <br>
 </div>
+    <br><br>
 </body>
 </html>
