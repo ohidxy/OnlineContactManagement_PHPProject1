@@ -150,7 +150,7 @@
 		<!-- PHP Code for showing row data -->	
       <?php
 		//SQL for selecting all the contact information
-		$sqlC = "SELECT * FROM $processedEmail";
+		$sqlC = "SELECT * FROM $processedEmail ORDER BY first_name ASC";
 	    $querySQLC = $mysqli->query($sqlC);
 		
 		

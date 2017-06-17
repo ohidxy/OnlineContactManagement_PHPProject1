@@ -19,57 +19,68 @@
         $skillFieldTable = $processedEmail."_skill";
 
         if(isset($_POST["UpdateSkillFieldName"])){
-            $selectedSkill = $_POST["selected"];
-            $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
-             
-            // Query for editing a skill name 
-            $_sql7 = "UPDATE $skillFieldTable "; 
-            $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
-            $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
-			
-            $result3 = $mysqli->query($_sql7);
-			
-			//Query for updating in Contact Table'
-			$_sqlUpdateContactTable = "UPDATE $processedEmail ";
-			$_sqlUpdateContactTable .= "SET skill_field = '".$newSkillName."' ";
-			$_sqlUpdateContactTable .= "WHERE skill_field = '".$selectedSkill."'";
-			
-			$queryForUpdateContactTable = $mysqli->query($_sqlUpdateContactTable);
-			
-			if(!$queryForUpdateContactTable){
-				echo "Error! Updating Skill Name into Contact table has been failed!";
-			}
-			
-            $success = true; 
+            if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+            {
+                $selectedSkill = $_POST["selected"];
+                $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
+
+                // Query for editing a skill name 
+                $_sql7 = "UPDATE $skillFieldTable "; 
+                $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
+                $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
+
+                $result3 = $mysqli->query($_sql7);
+
+                //Query for updating in Contact Table'
+                $_sqlUpdateContactTable = "UPDATE $processedEmail ";
+                $_sqlUpdateContactTable .= "SET skill_field = '".$newSkillName."' ";
+                $_sqlUpdateContactTable .= "WHERE skill_field = '".$selectedSkill."'";
+
+                $queryForUpdateContactTable = $mysqli->query($_sqlUpdateContactTable);
+
+                if(!$queryForUpdateContactTable){
+                    echo "Error! Updating Skill Name into Contact table has been failed!";
+                }
+
+                $success = true; 
+            }
         }
         
         if(isset($_POST["deleteSkill"])){
-            $selectedSkill1 = $_POST["selected"];
-            // Query for deleting a skill name in Skill Table
-            $_sql8 = "DELETE from $skillFieldTable "; 
-            $_sql8.= "WHERE skill_field_name = '".$selectedSkill1."'";
+            if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+            {
+                $selectedSkill1 = $_POST["selected"];
+                // Query for deleting a skill name in Skill Table
+                $_sql8 = "DELETE from $skillFieldTable "; 
+                $_sql8.= "WHERE skill_field_name = '".$selectedSkill1."'";
 
-            $result5 = $mysqli->query($_sql8);
-			
-			// Query for deleting a skill name in Contact Table
-            $_sql9 = "UPDATE $processedEmail "; 
-            $_sql9 .= "SET skill_field = 'None' ";
-			$_sql9 .= "WHERE skill_field = '".$selectedSkill1."'";
+                $result5 = $mysqli->query($_sql8);
 
-            $result6 = $mysqli->query($_sql9);
-			
-			
-            $deleteSuccess = true; 
+                // Query for deleting a skill name in Contact Table
+                $_sql9 = "UPDATE $processedEmail "; 
+                $_sql9 .= "SET skill_field = 'None' ";
+                $_sql9 .= "WHERE skill_field = '".$selectedSkill1."'";
+
+                $result6 = $mysqli->query($_sql9);
+
+
+                $deleteSuccess = true;
+            }
         }
 
         if(isset($_POST['submit'])){
-            $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
             
-            $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
-            $sql4 .= "values ('".$skillFieldName."')";
+            if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+            {
+                $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
+            
+                $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
+                $sql4 .= "values ('".$skillFieldName."')";
 
-            $resultSkill = $mysqli->query($sql4);
-            $skillFieldAdded = true;
+                $resultSkill = $mysqli->query($sql4);
+                $skillFieldAdded = true;
+         
+            }
         }
     ?>
 
@@ -112,6 +123,9 @@
 <center>
     
     <form action="skill_fields.php" method="post">
+        <?php $_SESSION["csrf_token"] = time();  ?>
+        <input type="hidden" name="csrf_token" value=" 
+        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>"> 
         <h1>Add a new Skill Field</h1><br>
         <input type="text" name="skillfield" placeholder="Enter a new skill field here...." required>
         <input class="btn btn-success" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submit">
@@ -132,6 +146,8 @@
     <h1>Edit a current Skill Field</h1><br>    
 
     <form action="skill_fields.php" method="post">
+        <input type="hidden" name="csrf_token" value=" 
+        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>">
         <?php 
             $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
@@ -148,6 +164,8 @@
         
         <!--Success Message  -->
         <?php
+        
+        
             if(isset($success)){
                 if($success){
                     echo "<div class=\"alert alert-success\">
@@ -164,6 +182,9 @@
     <h1>Delete a Skill Field</h1>
     <br>
     <form action="skill_fields.php" method="post">
+        <!-- code for ignoring refresh submission -->
+        <input type="hidden" name="csrf_token" value=" 
+        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>">
         
         <?php 
             $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";

@@ -20,54 +20,57 @@
 
 <?php
     if(isset($_POST["submitCreateForm"])){
-        $firstName = $mysqli->real_escape_string($_POST["firstname"]);
-        $firstName = trim($firstName," ");  //Trimming WhiteSpace
+        if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+            {
+            $firstName = $mysqli->real_escape_string($_POST["firstname"]);
+            $firstName = trim($firstName," ");  //Trimming WhiteSpace
 
-        $lastName = $mysqli->real_escape_string($_POST["lastname"]);
-        $lastName = trim($lastName," ");  //Trimming WhiteSpace
-        
-        $email = $mysqli->real_escape_string($_POST["email"]);
-        $email = trim($email," ");  //Trimming WhiteSpace
-        
-        $skillField = $mysqli->real_escape_string($_POST["selected"]);
-        $address = $mysqli->real_escape_string($_POST["address"]);
-        $website = $mysqli->real_escape_string($_POST["website"]);
-        
-        $linkedin = $mysqli->real_escape_string($_POST["linkedin"]); 
-        $linkedin = trim($linkedin," ");  //Trimming WhiteSpace
-        
-        $hpNo = $mysqli->real_escape_string($_POST["hpno"]);
-        $hpNo = trim($hpNo," ");  //Trimming WhiteSpace
-        
-        $twtnfb = $mysqli->real_escape_string($_POST["twtnfb"]);
-        $twtnfb = trim($twtnfb," ");  //Trimming WhiteSpace
-        
-        $company = $mysqli->real_escape_string($_POST["company"]);
-        
-        /*echo $firstName."<br>".$lastName."<br>".$email."<br>".$skillField."<br>".$address."<br>".$website."<br>".$linkedin."<br>".$hpNo."<br>".$twtnfb."<br>".$company;*/
-        
-        
-        
-        $createSql = "INSERT INTO $processedEmail ";
-        $createSql.= "(first_name, last_name, email, skill_field, address, website, linkedin, hp_no, twitter_fb, company) ";
-        $createSql.="value (";
-        $createSql.="'$firstName', ";
-        $createSql.="'$lastName', ";
-        $createSql.="'$email', ";
-        $createSql.="'$skillField', ";
-        $createSql.="'$address', ";
-        $createSql.="'$website', ";
-        $createSql.="'$linkedin', ";
-        $createSql.="'$hpNo', ";
-        $createSql.="'$twtnfb', ";
-        $createSql.="'$company'";
-        $createSql.=")";
-        
-        $processSql = $mysqli->query($createSql);
-        
-		$addSuccess = true; //For successful Add Message
-        if(!$processSql){
-            echo "SQL Error during creating table";
+            $lastName = $mysqli->real_escape_string($_POST["lastname"]);
+            $lastName = trim($lastName," ");  //Trimming WhiteSpace
+
+            $email = $mysqli->real_escape_string($_POST["email"]);
+            $email = trim($email," ");  //Trimming WhiteSpace
+
+            $skillField = $mysqli->real_escape_string($_POST["selected"]);
+            $address = $mysqli->real_escape_string($_POST["address"]);
+            $website = $mysqli->real_escape_string($_POST["website"]);
+
+            $linkedin = $mysqli->real_escape_string($_POST["linkedin"]); 
+            $linkedin = trim($linkedin," ");  //Trimming WhiteSpace
+
+            $hpNo = $mysqli->real_escape_string($_POST["hpno"]);
+            $hpNo = trim($hpNo," ");  //Trimming WhiteSpace
+
+            $twtnfb = $mysqli->real_escape_string($_POST["twtnfb"]);
+            $twtnfb = trim($twtnfb," ");  //Trimming WhiteSpace
+
+            $company = $mysqli->real_escape_string($_POST["company"]);
+
+            /*echo $firstName."<br>".$lastName."<br>".$email."<br>".$skillField."<br>".$address."<br>".$website."<br>".$linkedin."<br>".$hpNo."<br>".$twtnfb."<br>".$company;*/
+
+
+
+            $createSql = "INSERT INTO $processedEmail ";
+            $createSql.= "(first_name, last_name, email, skill_field, address, website, linkedin, hp_no, twitter_fb, company) ";
+            $createSql.="value (";
+            $createSql.="'$firstName', ";
+            $createSql.="'$lastName', ";
+            $createSql.="'$email', ";
+            $createSql.="'$skillField', ";
+            $createSql.="'$address', ";
+            $createSql.="'$website', ";
+            $createSql.="'$linkedin', ";
+            $createSql.="'$hpNo', ";
+            $createSql.="'$twtnfb', ";
+            $createSql.="'$company'";
+            $createSql.=")";
+
+            $processSql = $mysqli->query($createSql);
+
+            $addSuccess = true; //For successful Add Message
+            if(!$processSql){
+                echo "SQL Error during creating table";
+            }
         }
     }
 ?>
@@ -112,8 +115,16 @@
   <br>
  <center>  
      <br><br><br>
+     <!-- Code for avoiding data duplication -->
+     <?php $_SESSION["csrf_token"] = time();  ?>
+     <!-- -->
     <h1 style="margin-left:20px;">Create a New Contact</h1><br>
     <form style="width:550px;margin-left:20px;" method="post">
+        
+        <!-- Code for avoiding data duplication -->
+        <input type="hidden" name="csrf_token" value=" 
+        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>"> 
+        <!--------->
         <input placeholder="First Name (Required)" type="text" name="firstname" required>
         <input placeholder="Last Name (Required)" type="text" name="lastname" required>
         <input placeholder="Email (Required)" type="text" name="email" required>
