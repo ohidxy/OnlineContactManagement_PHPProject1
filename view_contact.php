@@ -65,8 +65,8 @@
             $result2 = $mysqli->query($sql2); 
  
 		   
-            echo "<form method=\"post\" action=\"view_contact.php\" onchange=\"filter()\">";
-            echo "<select id=\"sel\" name=\"selected\">";
+            
+            echo "<select id=\"sel\" name=\"selected\" onchange=\"filter()\">";
 			echo "<option></option>";
             echo "<option value=\"None\">None</option>";
             while($row = $result2->fetch_assoc()){
@@ -74,8 +74,6 @@
             }
             echo "<\select>";
             
-         
-            echo "</form>";
     ?>  
     
     
