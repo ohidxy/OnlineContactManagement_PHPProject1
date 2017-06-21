@@ -1,16 +1,20 @@
 <?php
+    ob_start();
     session_start();
 ?>
 
 <?php
-    require_once("includes/connect.php");   //Database connection
+    require("includes/connect.php");   //Database connection
 ?>
 
 <?php
 	if(isset($_POST['submit'])){              	 //checks if the submit button has been pressed
-		$username = $_POST['username']; 
-		$password = $_POST['password']; 
-		
+        
+		$username = $mysqli->real_escape_string($_POST['username']);
+        $username = trim($username, " ");
+        
+		$password = $mysqli->real_escape_string($_POST['password']); 
+        
 		$message="";      //defining error message 
 		
 		//Checking whether value is not set or empty
@@ -42,7 +46,7 @@
             $userFound = true;
             $_SESSION["email"]=$row["email"];
             $_SESSION["fullname"] = $row["full_name"];
-            header('Location: view_contact.php');
+            header("Location:view_contact.php");
             exit;
         }
     }
@@ -81,11 +85,11 @@
 <!-- //Login Form -->
 <div class="login-form">
 <h1>Login To Dashboard</h1>
-
+    <p>Demo Account: <br>[ <b>Username:</b> admin@ohid.info <b>Password:</b> ocm123 ]</p>
     <form action="index.php" method="post">
 
             <h2 style="font-size:25px;">USERNAME:</h2>
-            <input type="text" class="text" value="<?php echo $username; ?>" name="username" >
+            <input type="email" class="text" value="<?php echo $username; ?>" name="username" >
 
             <h2 style="font-size:25px;">PASSWORD:</h2>
             <input type="password" value="" name="password" >

@@ -115,7 +115,7 @@
     
     <!-- Feedback and Bug Report Buttons -->
 <feedback style="margin-top:5px; float:right;">
-    <a class="btn btn-warning btn-sm" href="#">Updates</a>
+    <a class="btn btn-warning btn-sm" href="updates.html" target="_blank">Updates</a>
     <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/dkvJLzxftGfC1AIG3" target="_blank">Bug Report</a>
     <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/w9zM6ECw5qtLKiXH3" target="_blank">Feedback</a>
 </feedback>  

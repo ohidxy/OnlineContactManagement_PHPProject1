@@ -32,25 +32,28 @@
             
             $email = $mysqli->real_escape_string($_POST["email"]);
             $email = trim($email," ");  //Trimming WhiteSpace
-
+            $email = strtolower($email);    
+            
             $skillField = $mysqli->real_escape_string($_POST["selected"]);
             $address = $mysqli->real_escape_string($_POST["address"]);
             $website = $mysqli->real_escape_string($_POST["website"]);
-
+            $website = strtolower($website);
+            
             $linkedin = $mysqli->real_escape_string($_POST["linkedin"]); 
             $linkedin = trim($linkedin," ");  //Trimming WhiteSpace
-
+            $linkedin = strtolower($linkedin);
+            
             $hpNo = $mysqli->real_escape_string($_POST["hpno"]);
             $hpNo = trim($hpNo," ");  //Trimming WhiteSpace
 
             $twtnfb = $mysqli->real_escape_string($_POST["twtnfb"]);
             $twtnfb = trim($twtnfb," ");  //Trimming WhiteSpace
-
+            $twtnfb = strtolower($twtnfb);
+            
             $company = $mysqli->real_escape_string($_POST["company"]);
-
-            /*echo $firstName."<br>".$lastName."<br>".$email."<br>".$skillField."<br>".$address."<br>".$website."<br>".$linkedin."<br>".$hpNo."<br>".$twtnfb."<br>".$company;*/
-
-
+            $company = trim($company," ");  //Trimming WhiteSpace
+            $company = ucwords($company);
+            
             
             
             ///SQL for checking if the email exists already///
@@ -122,7 +125,7 @@
   </ul>
     <!-- Feedback and Bug Report Buttons -->
 <feedback style="margin-top:5px; float:right;">
-    <a class="btn btn-warning btn-sm" href="#">Updates</a>
+    <a class="btn btn-warning btn-sm" href="updates.html" target="_blank">Updates</a>
     <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/dkvJLzxftGfC1AIG3" target="_blank">Bug Report</a>
     <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/w9zM6ECw5qtLKiXH3" target="_blank">Feedback</a>
 </feedback>    

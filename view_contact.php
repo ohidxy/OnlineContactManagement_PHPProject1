@@ -47,7 +47,7 @@
     
     <!-- Feedback and Bug Report Buttons -->
 <feedback style="margin-top:5px; float:right;">
-    <a class="btn btn-warning btn-sm" href="#">Updates</a>
+    <a class="btn btn-warning btn-sm" href="updates.html" target="_blank">Updates</a>
     <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/dkvJLzxftGfC1AIG3" target="_blank">Bug Report</a>
     <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/w9zM6ECw5qtLKiXH3" target="_blank">Feedback</a>
 </feedback>  
@@ -165,19 +165,28 @@
 			$html .='<td>
                       <a href="contact_details.php?emailid='.htmlspecialchars($row["email"]).'"  class="btn btn-info" style="background-color:#007DA5;">More</a>
                       </td>';
-		$html .="</tr>";
+		  $html .="</tr>";
 			
 			print($html);
 		}
-		
-		
+        //When table is empty
+        while($mysqli->affected_rows === 0){
+            $html = "<tr>";
+            $html .="<td></td>";
+            $html .="<td></td>";
+            $html .="<td></td>";
+			$html .="<td>There is no record!</td>";
+            $html .= "</tr>";
+			print($html);
+            break;
+        }
 	  ?>
 	  <!-- PHP Code for showing row data ends -->
     </tbody>
   </table>
   </div> 
     <!-- View Contact Data Table Ends --> 
-  <br><br><br><br><br>
+  <br><br><br>
 <center>Copyright © 2017 ohid.info</center>   <br>
 </div>
     <br><br>
