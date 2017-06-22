@@ -3,7 +3,7 @@
     
     require_once("includes/session_timeout.php");   //Session Time Out
     require_once("includes/connect.php");   //Database connection
-	require_once("includes/Token.php");   //Database connection
+	require_once("includes/Token.php");   //CSRF Token Class
 
     if(!$_SESSION["email"]){           //Checks if a session is started
         //Redirects to login page if a session isn't started

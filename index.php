@@ -5,11 +5,12 @@
 
 <?php
     require("includes/connect.php");   //Database connection
+    require_once("includes/Token.php");   //CSRF connection
 ?>
 
 <?php
-	if(isset($_POST['submit'])){              	 //checks if the submit button has been pressed
-        
+if(isset($_POST['submit'])){              	 //checks if the submit button has been pressed
+    if(Token::checkToken($_POST['csrf_login'])){
 		$username = $mysqli->real_escape_string($_POST['username']);
         $username = trim($username, " ");
         
@@ -57,11 +58,13 @@
     }
         
 			
-	}else{                                           //When the submit button isn't pressed
+	}
+}
+else{                                           //When the submit button isn't pressed
 		$username = null;
 		$password = null;
 		$message = null;
-	}
+}
 ?>
 
 
@@ -87,7 +90,7 @@
 <h1>Login To Dashboard</h1>
     <p>Demo Account: <br>[ <b>Username:</b> admin@ohid.info <b>Password:</b> ocm123 ]</p>
     <form action="index.php" method="post">
-
+            <input type="hidden" name="csrf_login" value="<?php echo Token::generateToken(); ?>">
             <h2 style="font-size:25px;">USERNAME:</h2>
             <input type="email" class="text" value="<?php echo $username; ?>" name="username" >
 
