@@ -5,7 +5,7 @@
 
 <?php
     require("includes/connect.php");   //Database connection
-    require_once("includes/Token.php");   //CSRF connection
+    require_once("includes/Token.php");   //CSRF token
 ?>
 
 <?php

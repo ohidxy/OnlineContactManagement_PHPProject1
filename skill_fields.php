@@ -1,15 +1,18 @@
 <?php 
     session_start();
+    
+    require_once("includes/session_timeout.php");   //Session Time Out
+    require_once("includes/connect.php");   //Database connection
+    require_once("includes/Token.php");   //CSRF token
+
+
     if(!$_SESSION["email"]){           //Checks if a session is started
         //Redirects to login page if a session isn't started
         header("location:index.php"); 
         exit;
     }
 ?>
-<?php
-    require_once("includes/session_timeout.php");   //Session Time Out
-    require_once("includes/connect.php");   //Database connection
-?>
+
 
 <?php 
         $processedEmail = $_SESSION["email"];
@@ -17,9 +20,26 @@
         $processedEmail = str_replace(".","",$processedEmail);
         
         $skillFieldTable = $processedEmail."_skill";
+        
+        
+        if(isset($_POST['submit'])){
+            
+            if($_POST["csrf_add_field"] == $_SESSION["csrf_add_field"])
+            {
+                $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
+                $skillFieldName = ucwords($skillFieldName);
+                $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
+                $sql4 .= "values ('".$skillFieldName."')";
+
+                $resultSkill = $mysqli->query($sql4);
+                $skillFieldAdded = true;
+         
+            }
+        }
+
 
         if(isset($_POST["UpdateSkillFieldName"])){
-            if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+            if($_POST["csrf_edit_field"] == $_SESSION["csrf_edit_field"])
             {
                 $selectedSkill = $_POST["selected"];
                 $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
@@ -47,7 +67,7 @@
         }
         
         if(isset($_POST["deleteSkill"])){
-            if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+            if($_POST["csrf_delete_field"] == $_SESSION["csrf_delete_field"])
             {
                 $selectedSkill1 = $_POST["selected"];
                 // Query for deleting a skill name in Skill Table
@@ -68,20 +88,7 @@
             }
         }
 
-        if(isset($_POST['submit'])){
-            
-            if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
-            {
-                $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
-                $skillFieldName = ucwords($skillFieldName);
-                $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
-                $sql4 .= "values ('".$skillFieldName."')";
-
-                $resultSkill = $mysqli->query($sql4);
-                $skillFieldAdded = true;
-         
-            }
-        }
+        
     ?>
 
 
@@ -121,12 +128,13 @@
 </feedback>  
     <br><br>
 <center>
-    
+    <h1>Add a new Skill Field</h1><br>
     <form action="skill_fields.php" method="post">
-        <?php $_SESSION["csrf_token"] = time();  ?>
-        <input type="hidden" name="csrf_token" value=" 
-        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>"> 
-        <h1>Add a new Skill Field</h1><br>
+        <?php 
+            $_SESSION['csrf_add_field'] = base64_encode(openssl_random_pseudo_bytes(32));
+        ?>
+        <input type="hidden" name="csrf_add_field" value="<?php echo $_SESSION['csrf_add_field'] ?>"> 
+        
         <input type="text" name="skillfield" placeholder="Enter a new skill field here...." required>
         <input class="btn btn-success" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submit">
         <?php
@@ -146,8 +154,11 @@
     <h1>Edit a current Skill Field</h1><br>    
 
     <form action="skill_fields.php" method="post">
-        <input type="hidden" name="csrf_token" value=" 
-        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>">
+        <?php 
+            $_SESSION['csrf_edit_field'] = base64_encode(openssl_random_pseudo_bytes(32));
+        ?>
+        <input type="hidden" name="csrf_edit_field" value="<?php echo $_SESSION['csrf_edit_field'] ?>"> 
+        
         <?php 
             $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
             $result2 = $mysqli->query($sql2); 
@@ -182,9 +193,10 @@
     <h1>Delete a Skill Field</h1>
     <br>
     <form action="skill_fields.php" method="post">
-        <!-- code for ignoring refresh submission -->
-        <input type="hidden" name="csrf_token" value=" 
-        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>">
+        <?php 
+            $_SESSION['csrf_delete_field'] = base64_encode(openssl_random_pseudo_bytes(32));
+        ?>
+        <input type="hidden" name="csrf_delete_field" value="<?php echo $_SESSION['csrf_delete_field'] ?>"> 
         
         <?php 
             $sql2 = "SELECT * from $skillFieldTable ORDER BY skill_field_name ASC";
