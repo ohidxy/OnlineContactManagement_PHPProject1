@@ -1,6 +1,10 @@
 <?php 
     session_start();
-        
+    
+    require_once("includes/session_timeout.php");   //Session Time Out
+    require_once("includes/connect.php");   //Database connection
+	require_once("includes/Token.php");   //Database connection
+
     if(!$_SESSION["email"]){           //Checks if a session is started
         //Redirects to login page if a session isn't started
         header("location:index.php");
@@ -14,13 +18,8 @@
 ?>
 
 <?php
-    require_once("includes/session_timeout.php");   //Session Time Out
-    require_once("includes/connect.php");   //Database connection
-?>
-
-<?php
     if(isset($_POST["submitCreateForm"])){
-        if($_SESSION["csrf_token"] == $_POST['csrf_token'] )
+        if(Token::checkToken($_POST["csrf_token"]))
         {
             $firstName = $mysqli->real_escape_string($_POST["firstname"]);
             $firstName = trim($firstName," ");  //Trimming WhiteSpace
@@ -133,15 +132,13 @@
   <br>
  <center>  
      <br><br><br>
-     <!-- Code for avoiding data duplication -->
-     <?php $_SESSION["csrf_token"] = time();  ?>
-     <!-- -->
+	 
+	
+    
     <h1 style="margin-left:20px;">Create a New Contact</h1><br>
     <form style="width:550px;margin-left:20px;" method="post">
-        
         <!-- Code for avoiding data duplication -->
-        <input type="hidden" name="csrf_token" value=" 
-        <?php print(htmlspecialchars($_SESSION["csrf_token"]));?>"> 
+        <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
         <!--------->
         <input placeholder="First Name (Required)" type="text" name="firstname" value ="<?php if(isset($firstName)){echo $firstName;} ?>" required>
         <input placeholder="Last Name (Required)" type="text" name="lastname" value ="<?php if(isset($lastName)){echo $lastName;} ?>" required>
@@ -179,8 +176,8 @@
                 }else if(isset($isEmailExist)){   //Email Exist Message
                     if($isEmailExist){
                         echo "<div class=\"alert alert-danger\">
-                            <strong>Email already exists! Please, try another email.</strong>
-                        </div>";
+								<strong>Email already exists! Please, try another email.</strong>
+							</div>";
                     }
                 }
             }
