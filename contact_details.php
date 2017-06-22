@@ -1,5 +1,10 @@
 <?php 
     session_start();
+    
+    require_once("includes/session_timeout.php");   //Session Time Out
+    require_once("includes/connect.php");   //Database connection
+    require_once("includes/Token.php");   //CSRF token
+    
     if(!$_SESSION["email"]){           //Checks if a session is started
         //Redirects to login page if a session isn't started
         header("location:index.php");   
@@ -13,8 +18,7 @@
 ?>
 
 <?php
-    require_once("includes/session_timeout.php");   //Session Time Out
-    require_once("includes/connect.php");   //Database connection
+    
     
     //Getting the Email for retrieving all Data
     $infoEmail = $mysqli->real_escape_string($_GET['emailid']);
@@ -29,7 +33,10 @@
 		break;
 	}
 
-    if(isset($_POST["saveForm"])){
+if(isset($_POST["saveForm"]))
+{
+    if(Token::checkToken($_POST["csrf_contact"]))
+    {
         $firstName = $mysqli->real_escape_string($_POST["firstname"]);
         $firstName = trim($firstName," ");  //Trimming WhiteSpace
 
@@ -75,19 +82,22 @@
 		
 		$deleteHTML = "style=\"display:none;\"";                           //Change the style of form
     }
+}
 	
 	
-	if(isset($_POST["deleteContact"])){
-		$_sqlDeleteContact = "DELETE from $processedEmail WHERE email='$infoEmail'";
-		
-		$deleteContactSQL = $mysqli->query($_sqlDeleteContact);
-		
-		//Hiding the form upon deletion
-		if($deleteContactSQL){
-			$deleteContactSuccess=true;
-			$deleteHTML = "style=\"display:none;\"";
-		}
-	}else{
+if(isset($_POST["deleteContact"]) && Token::checkToken($_POST["csrf_contact"])){
+    $_sqlDeleteContact = "DELETE from $processedEmail WHERE email='$infoEmail'";
+
+    $deleteContactSQL = $mysqli->query($_sqlDeleteContact);
+
+    //Hiding the form upon deletion
+    if($deleteContactSQL){
+        $deleteContactSuccess=true;
+        $deleteHTML = "style=\"display:none;\"";
+    }
+}
+      
+else{
 		$deleteContactSuccess = false;
 		if(!isset($_POST["saveForm"]) && !isset($emailFound)){
 			$deleteHTML = "style=\"width:550px;margin-left:20px;\"";
@@ -133,11 +143,12 @@
             $_sqlInfoSearch.="WHERE email='$infoEmail'";    
         
             $findInfo = $mysqli->query($_sqlInfoSearch);
-            
     ?>    
 		
 	
     <form id="contactForm" align="center" <?php echo $deleteHTML; ?> method="post">
+        <input type="hidden" name="csrf_contact" value="<?php echo Token::generateToken(); ?>">
+        
        <?php 
             //Method for pasting User data into input field of View Contact > More
             while($row = $findInfo->fetch_assoc()){
