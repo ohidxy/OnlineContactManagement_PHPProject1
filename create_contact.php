@@ -63,8 +63,8 @@
                  $isEmailExist = true;
             }
             
-            
-            //SQL for creating new contact
+        
+            /*
             $createSql = "INSERT INTO $processedEmail ";
             $createSql.= "(first_name, last_name, email, skill_field, address, website, linkedin, hp_no, twitter_fb, company) ";
             $createSql.="value (";
@@ -78,15 +78,27 @@
             $createSql.="'$hpNo', ";
             $createSql.="'$twtnfb', ";
             $createSql.="'$company'";
-            $createSql.=")";
+            $createSql.=")";   */
+            
+            
+            //SQL Prepared Statements for Inserting Contact Data
+            $_SQL ="INSERT INTO $processedEmail (first_name, last_name, email, skill_field, address, website, linkedin, hp_no, twitter_fb, company) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+            $stmt = $mysqli->prepare($_SQL);
+            
+            $stmt->bind_param('ssssssssss', $firstName, $lastName, $email, $skillField, $address, $website, $linkedin, $hpNo, $twtnfb, $company);
             //////////////////////////
+            
+            
             $addSuccess = false;
             if($isEmailExist === false){
-                $processSql = $mysqli->query($createSql);
+                $stmt->execute();
+                
+                //$processSql = $mysqli->query($createSql);
                 $addSuccess = true; //For successful Add Message
             }else{
                 $addSuccess = false;
             }
+            $stmt->close();
             
         }
     }
@@ -141,7 +153,9 @@
         <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
         <!--------->
         <input placeholder="First Name (Required)" type="text" name="firstname" value ="<?php if(isset($firstName)){echo $firstName;} ?>" required>
+        
         <input placeholder="Last Name (Required)" type="text" name="lastname" value ="<?php if(isset($lastName)){echo $lastName;} ?>" required>
+        
         <input placeholder="Email (Required)" type="email" name="email" value ="<?php if(isset($email)){echo $email;} ?>" required>
         
         <!--Skill Field -->

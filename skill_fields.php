@@ -27,40 +27,48 @@
             if($_POST["csrf_add_field"] == $_SESSION["csrf_add_field"])
             {
                 $skillFieldName = $mysqli->real_escape_string($_POST["skillfield"]);
+                $skillFieldName = strip_tags($skillFieldName);
+                $skillFieldName = trim($skillFieldName);
                 $skillFieldName = ucwords($skillFieldName);
+                
                 $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
-                $sql4 .= "values ('".$skillFieldName."')";
-
+                $sql4 .= "values ( ? )";
+                
+                //Prepare statement for entering new SKILL FIELD
+                $stmt = $mysqli->prepare($sql4);
+                $stmt->bind_param("s", $skillFieldName);
+                $stmt->execute();
+                $stmt->close();
+                
                 $resultSkill = $mysqli->query($sql4);
                 $skillFieldAdded = true;
          
             }
         }
 
-
         if(isset($_POST["UpdateSkillFieldName"])){
             if($_POST["csrf_edit_field"] == $_SESSION["csrf_edit_field"])
             {
                 $selectedSkill = $_POST["selected"];
                 $newSkillName = $mysqli->real_escape_string($_POST["newSkillFieldName"]);
+                $newSkillName = strip_tags($newSkillName);
+                $newSkillName = trim($newSkillName);
                 $newSkillName = ucwords($newSkillName);
+                
+                
                 // Query for editing a skill name 
-                $_sql7 = "UPDATE $skillFieldTable "; 
-                $_sql7.= "SET skill_field_name = '".$newSkillName."' ";
-                $_sql7.= "WHERE skill_field_name = '".$selectedSkill."'";
-
-                $result3 = $mysqli->query($_sql7);
+$_sql7 = "UPDATE $skillFieldTable SET skill_field_name = ? WHERE skill_field_name = ? ";
+                $stmt = $mysqli->prepare($_sql7);
+                $stmt->bind_param("ss", $newSkillName, $selectedSkill);
+                $stmt->execute();
+                $stmt->close();
 
                 //Query for updating in Contact Table'
-                $_sqlUpdateContactTable = "UPDATE $processedEmail ";
-                $_sqlUpdateContactTable .= "SET skill_field = '".$newSkillName."' ";
-                $_sqlUpdateContactTable .= "WHERE skill_field = '".$selectedSkill."'";
-
-                $queryForUpdateContactTable = $mysqli->query($_sqlUpdateContactTable);
-
-                if(!$queryForUpdateContactTable){
-                    echo "Error! Updating Skill Name into Contact table has been failed!";
-                }
+$_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_field = ? ";
+                $stmt = $mysqli->prepare($_sqlUpdateCntctTbl);
+                $stmt->bind_param("ss", $newSkillName, $selectedSkill);
+                $stmt->execute();
+                $stmt->close();
 
                 $success = true; 
             }
@@ -70,18 +78,26 @@
             if($_POST["csrf_delete_field"] == $_SESSION["csrf_delete_field"])
             {
                 $selectedSkill1 = $_POST["selected"];
+                
                 // Query for deleting a skill name in Skill Table
                 $_sql8 = "DELETE from $skillFieldTable "; 
-                $_sql8.= "WHERE skill_field_name = '".$selectedSkill1."'";
+                $_sql8.= "WHERE skill_field_name = ? ";
 
-                $result5 = $mysqli->query($_sql8);
-
+                $stmt = $mysqli->prepare($_sql8);
+                $stmt->bind_param("s",$selectedSkill1);
+                $stmt->execute();
+                $stmt->close();
+                
+                
                 // Query for deleting a skill name in Contact Table
                 $_sql9 = "UPDATE $processedEmail "; 
                 $_sql9 .= "SET skill_field = 'None' ";
-                $_sql9 .= "WHERE skill_field = '".$selectedSkill1."'";
+                $_sql9 .= "WHERE skill_field = ? ";
 
-                $result6 = $mysqli->query($_sql9);
+                $stmt = $mysqli->prepare($_sql9);
+                $stmt->bind_param("s",$selectedSkill1);
+                $stmt->execute();
+                $stmt->close();
 
 
                 $deleteSuccess = true;
