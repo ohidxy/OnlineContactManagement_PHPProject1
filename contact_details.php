@@ -3,14 +3,16 @@
     
     require_once("includes/session_timeout.php");   //Session Time Out
     require_once("includes/connect.php");   //Database connection
+    require_once("includes/session_management.php");   //Session Settings
     require_once("includes/Token.php");   //CSRF token
     
-    if(!$_SESSION["email"]){           //Checks if a session is started
+    if(!isset($_SESSION["email"])){           //Checks if a session is started
         //Redirects to login page if a session isn't started
-        header("location:index.php");   
+        header("Location:index.php");   
         exit;
+    }else{
+        before_every_protected_page();
     }
-
     $processedEmail = $_SESSION["email"];
     $processedEmail = str_replace("@","",$processedEmail);
     $processedEmail = str_replace(".","",$processedEmail);

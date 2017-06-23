@@ -1,9 +1,5 @@
 <?php
-    session_start();
-    session_unset();
-    session_destroy();
-    ob_start();
-    header("location:index.php");
-    ob_end_flush(); 
-    exit();
+    require_once("includes/session_management.php");   //session management
+    
+    after_successful_logout();   //helps loggin out
 ?>

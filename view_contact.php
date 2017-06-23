@@ -1,20 +1,22 @@
 <?php 
     session_start();
-    if(!$_SESSION["email"]){           //Checks if a session is started
+    require_once("includes/session_timeout.php");   //Session Time Out
+    require_once("includes/connect.php");   //Database connection
+    require_once("includes/session_management.php");   //Session Settings
+
+    
+    if(!isset($_SESSION["email"])){           //Checks if a session is started
         //Redirects to login page if a session isn't started
-        header("location:index.php");   
+        header("Location:index.php");   
         exit;
+    }else{
+        after_successful_login();
     }
 
     $processedEmail = $_SESSION["email"];
     $processedEmail = str_replace("@","",$processedEmail);
     $processedEmail = str_replace(".","",$processedEmail);
     $skillFieldTable = $processedEmail."_skill";
-?>
-
-<?php
-    require_once("includes/session_timeout.php");   //Session Time Out
-    require_once("includes/connect.php");   //Database connection
 ?>
 
 

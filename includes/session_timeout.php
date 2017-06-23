@@ -2,7 +2,7 @@
     //Session Time Out
     if(isset($_SESSION['last_activity'])){
         if((time()-$_SESSION['last_activity'])>(10*60)){     //Limiting to 10 minutes
-            echo time()-$_SESSION['last_activity'];
+            $_SESSION['logged_in'] = false;
             session_unset();
             session_destroy();
             ob_start();
