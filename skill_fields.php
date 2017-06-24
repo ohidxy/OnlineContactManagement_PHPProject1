@@ -34,6 +34,8 @@
                 $skillFieldName = strip_tags($skillFieldName);
                 $skillFieldName = trim($skillFieldName);
                 $skillFieldName = ucwords($skillFieldName);
+                $skillFieldName = htmlspecialchars($skillFieldName);
+                
                 
                 $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
                 $sql4 .= "values ( ? )";
@@ -58,7 +60,7 @@
                 $newSkillName = strip_tags($newSkillName);
                 $newSkillName = trim($newSkillName);
                 $newSkillName = ucwords($newSkillName);
-                
+                $newSkillName = htmlspecialchars($newSkillName);
                 
                 // Query for editing a skill name 
 $_sql7 = "UPDATE $skillFieldTable SET skill_field_name = ? WHERE skill_field_name = ? ";

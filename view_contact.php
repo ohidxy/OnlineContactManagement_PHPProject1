@@ -5,7 +5,7 @@
     require_once("includes/session_management.php");   //Session Settings
 
     
-    if(!isset($_SESSION["email"])){           //Checks if a session is started
+    if(!isset($_SESSION["email"])){  //Checks if a session is started
         //Redirects to login page if a session isn't started
         header("Location:index.php");   
         exit;

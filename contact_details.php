@@ -41,27 +41,39 @@ if(isset($_POST["saveForm"]))
     {
         $firstName = $mysqli->real_escape_string($_POST["firstname"]);
         $firstName = trim($firstName," ");  //Trimming WhiteSpace
+        $firstName = htmlspecialchars($firstName);
 
         $lastName = $mysqli->real_escape_string($_POST["lastname"]);
         $lastName = trim($lastName," ");  //Trimming WhiteSpace
+        $lastName = htmlspecialchars($lastName);
+        
         
         $email = $mysqli->real_escape_string($_POST["email"]);
         $email = trim($email," ");  //Trimming WhiteSpace
+        $lastName = htmlspecialchars($lastName);
+        
         
         $skillField = $mysqli->real_escape_string($_POST["selected"]);
         $address = $mysqli->real_escape_string($_POST["address"]);
+        $address = htmlspecialchars($address);
+        
         $website = $mysqli->real_escape_string($_POST["website"]);
+        $website = htmlspecialchars($website);
         
         $linkedin = $mysqli->real_escape_string($_POST["linkedin"]); 
         $linkedin = trim($linkedin," ");  //Trimming WhiteSpace
+        $linkedin = htmlspecialchars($linkedin);
         
         $hpNo = $mysqli->real_escape_string($_POST["hpno"]);
         $hpNo = trim($hpNo," ");  //Trimming WhiteSpace
+        $hpNo = htmlspecialchars($hpNo);
         
         $twtnfb = $mysqli->real_escape_string($_POST["twtnfb"]);
         $twtnfb = trim($twtnfb," ");  //Trimming WhiteSpace
+        $twtnfb = htmlspecialchars($twtnfb);
         
         $company = $mysqli->real_escape_string($_POST["company"]);
+        $company = htmlspecialchars($company);
         
         
         $saveForm = "UPDATE $processedEmail ";

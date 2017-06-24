@@ -11,7 +11,7 @@
         header("Location:index.php");   
         exit;
     }else{
-        before_every_protected_page();
+        before_every_protected_page(); 
     }
 
     $processedEmail = $_SESSION["email"];
@@ -27,35 +27,48 @@
             $firstName = $mysqli->real_escape_string($_POST["firstname"]);
             $firstName = trim($firstName," ");  //Trimming WhiteSpace
             $firstName = ucwords($firstName);
+            $firstName = htmlspecialchars($firstName);
             
             $lastName = $mysqli->real_escape_string($_POST["lastname"]);
             $lastName = trim($lastName," ");  //Trimming WhiteSpace
             $lastName = ucwords($lastName);
+            $lastName = htmlspecialchars($lastName);
+            
             
             $email = $mysqli->real_escape_string($_POST["email"]);
             $email = trim($email," ");  //Trimming WhiteSpace
             $email = strtolower($email);    
+            $email = htmlspecialchars($email);
+            
             
             $skillField = $mysqli->real_escape_string($_POST["selected"]);
             $address = $mysqli->real_escape_string($_POST["address"]);
             $website = $mysqli->real_escape_string($_POST["website"]);
             $website = strtolower($website);
+            $website = htmlspecialchars($website);
+            
             
             $linkedin = $mysqli->real_escape_string($_POST["linkedin"]); 
             $linkedin = trim($linkedin," ");  //Trimming WhiteSpace
             $linkedin = strtolower($linkedin);
+            $linkedin = htmlspecialchars($linkedin);
+            
             
             $hpNo = $mysqli->real_escape_string($_POST["hpno"]);
             $hpNo = trim($hpNo," ");  //Trimming WhiteSpace
-
+            $hpNo = htmlspecialchars($hpNo);
+            
+            
             $twtnfb = $mysqli->real_escape_string($_POST["twtnfb"]);
             $twtnfb = trim($twtnfb," ");  //Trimming WhiteSpace
             $twtnfb = strtolower($twtnfb);
+            $twtnfb = htmlspecialchars($twtnfb);
+            
             
             $company = $mysqli->real_escape_string($_POST["company"]);
             $company = trim($company," ");  //Trimming WhiteSpace
             $company = ucwords($company);
-            
+            $company = htmlspecialchars($company);
             
             
             ///SQL for checking if the email exists already///
