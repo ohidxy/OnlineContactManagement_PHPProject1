@@ -5,6 +5,7 @@
 
 <?php
     require("includes/connect.php");   //Database connection
+    require("includes/throttle.php");   //Database connection
     require_once("includes/Token.php");   //CSRF token
 ?>
 
@@ -35,9 +36,9 @@ if(isset($_POST['submit'])){              	 //checks if the submit button has be
 		else if($valueLength<$min || $valueLength>$max)							  //Minimum and Maximum Password Length check 
 			$message .="Please, Choose a password between 3 to 25 Characters Length!<br/>";
         
-    //Query for selecting email from tabe "user"
-    $_sql = "SELECT full_name, email, password FROM user";
-    $result = $mysqli->query($_sql);
+        //Query for selecting email from tabe "user"
+        $_sql = "SELECT full_name, email, password FROM user";
+        $result = $mysqli->query($_sql);
         
     
     while($row = $result->fetch_assoc()){
@@ -47,6 +48,8 @@ if(isset($_POST['submit'])){              	 //checks if the submit button has be
             $userFound = true;
             $_SESSION["email"]=$row["email"];
             $_SESSION["fullname"] = $row["full_name"];
+            $_SESSION["failed_login_count"] = $row["failed_login_count"];
+            
             header("Location:view_contact.php");
             exit;
         }

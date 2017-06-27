@@ -70,8 +70,8 @@
         
     //SQL Activities for creating new user
     $_sql = "INSERT INTO user "; 
-    $_sql .="(full_name, email, password) ";
-    $_sql .="VALUES ('$fullname', '$email', '$password') ";
+    $_sql .="(full_name, email, password, session_duration) ";
+    $_sql .="VALUES ('$fullname', '$email', '$password', 5) ";
     
     $processedEmail = str_replace('@','',$email);    
     $processedEmail = str_replace('.','',$processedEmail);  

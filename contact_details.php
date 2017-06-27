@@ -140,18 +140,23 @@ else{
 <!-- Navigation Container -->
 <div class="container" style="min-height:680px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px;">
+    
+    <?php
+        //Code for show Menu Selected 
+        $isViewContactActive = "active";
+        $isAccountActive = "";
+        $isTasksActive = "";
+    ?>
+    <!-- navigation code goes here -->
+    <?php include("menu_navigation.php"); ?>
     <br>
-    <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
-    <ul class="nav nav-pills nav-justified">
-    <li class="active"><a href="view_contact.php">View Contact</a></li>
-    <li><a href="create_contact.php">Create New Contact</a></li>
-    <li><a href="skill_fields.php">Skill Fields</a></li>
-    <li><a href="logout.php">Log Out</a></li>
-  </ul>
-    <br><h1 align="center">Contact Details</h1><br>
     <center>
-	
-	
+    <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;background-color:#127E92;">View Contacts</a>
+    <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;">Create New Contact</a>
+    <a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px;">Skill Fields</a>
+    </center> 
+    
+    <center><br><br>
     <?php 
             $_sqlInfoSearch = "SELECT * FROM $processedEmail ";
             $_sqlInfoSearch.="WHERE email='$infoEmail'";    
@@ -161,6 +166,7 @@ else{
 		
 	
     <form id="contactForm" align="center" <?php echo $deleteHTML; ?> method="post">
+        
         <input type="hidden" name="csrf_contact" value="<?php echo Token::generateToken(); ?>">
         
        <?php 
@@ -168,6 +174,7 @@ else{
             while($row = $findInfo->fetch_assoc()){
         
         ?> 
+        <h1>Contact Details of <b><?php echo $row["first_name"]." ".$row["last_name"]; ?></b></h1><br>
         
         <input value="<?php echo $row["first_name"]; ?>" type="text" name="firstname" placeholder="First Name" required>
         <input value="<?php echo $row["last_name"]; ?>" type="text" name="lastname" placeholder="Last Name" required>
@@ -243,8 +250,6 @@ else{
                 }
             }
     ?>
-	
-    </center>
-</div><br><br>
-</body>
-</html>
+	<br><br><br><br><br><br>
+    <!-- Footer code goes here -->
+     <?php include("footer.php"); ?>

@@ -133,22 +133,24 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
 <!-- Navigation Container -->
 <div class="container"  style="min-height:680px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px; margin-bottom:50px;" >
-    <br>
-    <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
-  <ul class="nav nav-pills nav-justified">
-    <li><a href="view_contact.php">View Contact</a></li>
-    <li><a href="create_contact.php">Create New Contact</a></li>
-    <li  class="active"><a href="skill_fields.php">Skill Fields</a></li>
-    <li><a href="logout.php">Log Out</a></li>
-  </ul>
     
-    <!-- Feedback and Bug Report Buttons -->
-<feedback style="margin-top:5px; float:right;">
-    <a class="btn btn-warning btn-sm" href="updates.html" target="_blank">Updates</a>
-    <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/dkvJLzxftGfC1AIG3" target="_blank">Bug Report</a>
-    <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/w9zM6ECw5qtLKiXH3" target="_blank">Feedback</a>
-</feedback>  
-    <br><br>
+    <?php
+        //Code for show Menu Selected 
+        $isViewContactActive = "active";
+        $isAccountActive = "";
+        $isTasksActive = "";
+    ?>
+    <!-- navigation code goes here -->
+    <?php include("menu_navigation.php"); ?>
+    <br>
+    <center>
+    <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;">View Contacts</a>
+    <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;">Create New Contact</a>
+    <a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px; background-color:#127E92;">Skill Fields</a>
+    </center> 
+    
+    
+    <br>
 <center>
     <h1>Add a new Skill Field</h1><br>
     <form action="skill_fields.php" method="post">
@@ -246,13 +248,5 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
 </center>
 <br><br>
 
-    <!-- Footer Starts -->
-    <center>Copyright © 2017 ohid.info</center> <br>
-    <!-- Footer End -->
-</div>
-
-    
-    
-  
-</body>
-</html>
+    <!-- Footer code goes here -->
+     <?php include("footer.php"); ?>

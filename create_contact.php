@@ -141,25 +141,23 @@
 <!-- Navigation Container -->
 <div class="container" style="min-height:680px; border-style: solid;
     border-width: 3px; border-radius:10px; margin-top:10px; margin-bottom:50px;">
-    <br>
-    <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
     
-  <ul class="nav nav-pills nav-justified">
-    <li><a href="view_contact.php">View Contact</a></li>
-    <li  class="active"><a href="create_contact.php">Create New Contact</a></li>
-    <li><a href="skill_fields.php">Skill Fields</a></li>
-    <li><a href="logout.php">Log Out</a></li>
-  </ul>
-    <!-- Feedback and Bug Report Buttons -->
-<feedback style="margin-top:5px; float:right;">
-    <a class="btn btn-warning btn-sm" href="updates.html" target="_blank">Updates</a>
-    <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/dkvJLzxftGfC1AIG3" target="_blank">Bug Report</a>
-    <a class="btn btn-warning btn-sm" href="https://goo.gl/forms/w9zM6ECw5qtLKiXH3" target="_blank">Feedback</a>
-</feedback>    
-
-  <br>
+    <?php
+        //Code for show Menu Selected
+        $isTasksActive = "";
+        $isAccountActive = "";
+        $isViewContactActive = "active";
+    ?>
+    <!-- navigation code goes here -->
+    <?php include("menu_navigation.php"); ?>
+    <br>
+    <center>
+    <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;">View Contacts</a>
+    <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;background-color:#127E92;">Create New Contact</a>
+    <a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px;">Skill Fields</a>
+    </center>  
  <center>  
-     <br><br><br>
+     <br><br>
 	 
 	
     
@@ -168,11 +166,11 @@
         <!-- Code for avoiding data duplication -->
         <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
         <!--------->
-        <input placeholder="First Name (Required)" type="text" name="firstname" value ="<?php if(isset($firstName)){echo $firstName;} ?>" required>
+        <input placeholder="First Name (Required)" type="text" name="firstname" value ="" required>
         
-        <input placeholder="Last Name (Required)" type="text" name="lastname" value ="<?php if(isset($lastName)){echo $lastName;} ?>" required>
+        <input placeholder="Last Name (Required)" type="text" name="lastname" value ="" required>
         
-        <input placeholder="Email (Required)" type="email" name="email" value ="<?php if(isset($email)){echo $email;} ?>" required>
+        <input placeholder="Email (Required)" type="email" name="email" value ="" required>
         
         <!--Skill Field -->
         <!--PHP COde for Selecting Categories -->
@@ -190,12 +188,12 @@
             echo "<\select>";
         ?>
         
-        <input placeholder="Address" type="text" name="address" value ="<?php if(isset($address)){echo $address;} ?>">
-        <input placeholder="Website URL" type="text" name="website" value ="<?php if(isset($website)){echo $website;} ?>">
-        <input placeholder="LinkedIn URL" type="text" name="linkedin" value ="<?php if(isset($linkedin)){echo $linkedin;} ?>">
-        <input placeholder="H/P No" type="text" name="hpno" value ="<?php if(isset($hpNo)){echo $hpNo;} ?>">
+        <input placeholder="Address" type="text" name="address" value ="">
+        <input placeholder="Website URL" type="text" name="website" value ="">
+        <input placeholder="LinkedIn URL" type="text" name="linkedin" value ="">
+        <input placeholder="H/P No" type="text" name="hpno" value ="">
         <input placeholder="Twitter/FB URL" type="text" name="twtnfb" value ="<?php if(isset($twtnfb)){echo $twtnfb;} ?>">
-        <input placeholder="Company" type="text" name="company" value ="<?php if(isset($company)){echo $company;} ?>">
+        <input placeholder="Company" type="text" name="company" value ="">
 
 		<?php  //Success Message
             if(isset($addSuccess)){
@@ -215,10 +213,7 @@
 		
 		<input class="btn btn-success" style="float:right;margin-top:0px;margin-right:25px;width:100px;font-size:18px;" type="submit" value="Submit" name="submitCreateForm">
 	</form>
-     <br><br><br>
-</center>   
-<br><br><br><br><br>
-<center>Copyright © 2017 ohid.info</center>     
-</div> 
-</body>
-</html>
+     <br><br><br><br>
+     
+     <!-- Footer code goes here -->
+     <?php include("footer.php"); ?>
