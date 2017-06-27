@@ -1,5 +1,5 @@
 <?php 
-    die("Sorry, sign up isn't open until beta version!");
+    
     session_start();
     
     $_SESSION["message"]="Welcome";

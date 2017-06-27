@@ -165,14 +165,13 @@
     <form style="width:550px;margin-left:20px;" method="post">
         <!-- Code for avoiding data duplication -->
         <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
-        <!--------->
+
         <input placeholder="First Name (Required)" type="text" name="firstname" value ="" required>
-        
+
         <input placeholder="Last Name (Required)" type="text" name="lastname" value ="" required>
-        
+
         <input placeholder="Email (Required)" type="email" name="email" value ="" required>
         
-        <!--Skill Field -->
         <!--PHP COde for Selecting Categories -->
         
         <?php 
@@ -189,7 +188,7 @@
         ?>
         
         <input placeholder="Address" type="text" name="address" value ="">
-        <input placeholder="Website URL" type="text" name="website" value ="">
+        <input placeholder="Website/Github URL" type="text" name="website" value ="">
         <input placeholder="LinkedIn URL" type="text" name="linkedin" value ="">
         <input placeholder="H/P No" type="text" name="hpno" value ="">
         <input placeholder="Twitter/FB URL" type="text" name="twtnfb" value ="<?php if(isset($twtnfb)){echo $twtnfb;} ?>">

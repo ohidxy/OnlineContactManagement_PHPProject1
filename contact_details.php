@@ -50,7 +50,7 @@ if(isset($_POST["saveForm"]))
         
         $email = $mysqli->real_escape_string($_POST["email"]);
         $email = trim($email," ");  //Trimming WhiteSpace
-        $lastName = htmlspecialchars($lastName);
+        $email = htmlspecialchars($email);
         
         
         $skillField = $mysqli->real_escape_string($_POST["selected"]);

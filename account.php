@@ -36,6 +36,107 @@
                 $sessionSaveSuccess = true;
           }
         }
+
+  if(isset($_POST["saveUserData"]))
+  {   
+    if($_POST["csrf_user_information"] == $_SESSION["csrf_user_information"]){
+          $fullname = $mysqli->real_escape_string($_POST["fullname"]);
+          $fullname = trim($fullname," ");  //Trimming WhiteSpace
+          $fullname = htmlspecialchars($fullname);
+          
+          //Immediate effect of name in Session
+          $_SESSION["fullname"] = $fullname;
+          //////////////////////////////////
+
+          $email = $mysqli->real_escape_string($_POST["email"]);
+          $email = trim($email," ");  //Trimming WhiteSpace
+          $email = htmlspecialchars($email);
+          
+          //$skillField = $mysqli->real_escape_string($_POST["selected"]);
+          $address = $mysqli->real_escape_string($_POST["address"]);
+          $address = htmlspecialchars($address);
+          
+          $website = $mysqli->real_escape_string($_POST["website"]);
+          $website = htmlspecialchars($website);
+          
+          $linkedin = $mysqli->real_escape_string($_POST["linkedin"]); 
+          $linkedin = trim($linkedin," ");  //Trimming WhiteSpace
+          $linkedin = htmlspecialchars($linkedin);
+          
+          $hpNo = $mysqli->real_escape_string($_POST["hpno"]);
+          $hpNo = trim($hpNo," ");  //Trimming WhiteSpace
+          $hpNo = htmlspecialchars($hpNo);
+          
+          $twtnfb = $mysqli->real_escape_string($_POST["twtnfb"]);
+          $twtnfb = trim($twtnfb," ");  //Trimming WhiteSpace
+          $twtnfb = htmlspecialchars($twtnfb);
+          
+          $company = $mysqli->real_escape_string($_POST["company"]);
+          $company = htmlspecialchars($company);
+          
+          $useremail = $email;
+
+          $saveForm = "UPDATE user ";
+          $saveForm.= "SET ";
+          $saveForm.="full_name = ?, ";
+          $saveForm.="email = ?, ";
+          $saveForm.="address = ?, ";
+          $saveForm.="website = ?, ";
+          $saveForm.="linkedin = ?, ";
+          $saveForm.="hp_no = ?, ";
+          $saveForm.="twitter_fb = ?, ";
+          $saveForm.="company = ?";
+          $saveForm.=" WHERE email = '$email'";
+          
+          $stmt = $mysqli->prepare($saveForm);
+          
+          $stmt->bind_param('ssssssss', $fullname, $email, $address, $website, $linkedin, $hpNo, $twtnfb, $company);
+          $stmt->execute();
+          $stmt->close();
+          //////////////////////////
+          $saveSuccess = true; //For successful Add Message
+      }
+  }
+
+
+  if(isset($_POST["changePasswordForm"])){
+          if($_POST["csrf_change_password"] == $_SESSION["csrf_change_password"]){
+                $currentPassword = $mysqli->real_escape_string($_POST['currentPassword']);
+                $currentPassword = htmlspecialchars($currentPassword); 
+
+                $newPassword = $mysqli->real_escape_string($_POST['newPassword']); 
+                $newPassword = htmlspecialchars($newPassword);
+
+                $confirmPassword = $mysqli->real_escape_string($_POST['confirmPassword']); 
+                $confirmPassword = htmlspecialchars($confirmPassword);
+                
+                $email =$_SESSION["email"];
+
+                $sqlPasswordSearch = "SELECT password FROM user WHERE email = '$email'";
+                $sqlPassSearchQuery = $mysqli->query($sqlPasswordSearch);
+                
+                while($row = $sqlPassSearchQuery->fetch_assoc()){
+                      if(password_verify($currentPassword, $row["password"])){
+                            $currentPasswordMatch = true;
+                      }
+                }
+                
+                //Password encrypting before enterting into database
+                $finalConfirmPassword = password_hash($confirmPassword, PASSWORD_BCRYPT);
+
+                $sqlPasswordUpdate = "UPDATE user SET password = ? WHERE email = ?";
+                $stmt = $mysqli->prepare($sqlPasswordUpdate);
+                $stmt->bind_param('ss', $finalConfirmPassword, $email);
+
+                if(isset($currentPasswordMatch) && ($newPassword == $confirmPassword)){
+                       $stmt->execute();
+                       $stmt->close();
+                       $changePasswordSuccess = true;
+                }else{
+                    $changePasswordFailure = true;
+                }
+          }
+  }
 ?>
 
 
@@ -69,74 +170,103 @@
     <?php include("menu_navigation.php"); ?>
     <br><br>
     
-    <!--*************** Profile Settings **************** -->
+    <!--******************* PROFILE SETTINGS ****************** -->
+    <!--******************* PROFILE SETTINGS ****************** -->
+    <!--******************* PROFILE SETTINGS ****************** -->
+    
+    <?php
+        //Responsible for retriving user data 
+            $_sqlInfoSearch = "SELECT * FROM user ";
+            $_sqlInfoSearch.="WHERE email='".$_SESSION["email"]."'";   
+        
+            $findInfo = $mysqli->query($_sqlInfoSearch);
+
+            //Method for pasting User data into input field of View Contact > More
+            while($row = $findInfo->fetch_assoc()){
+    ?> 
     <center >
     <form style="margin:20px;border-style:solid;border-color:#BDBDBD;border-width:2px;border-radius:5px;" method="post">
       <h1 style="margin-left:20px;">Your Profile</h1><br>
         <!-- Code for avoiding data duplication -->
-        <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
+        <?php 
+            $_SESSION['csrf_user_information'] = base64_encode(openssl_random_pseudo_bytes(32));
+        ?>
+        <input type="hidden" name="csrf_user_information" value="<?php echo $_SESSION['csrf_user_information'] ?>">
         
-        <input placeholder="First Name" type="text" name="address" value ="">
-        <input placeholder="Last Name" type="text" name="website" value ="">
-        <input placeholder="Email" type="text" name="website" value="admin@ohid.info" readonly>
+        <center style="width:600px;padding-bottom:10px;">
+        <input placeholder="Full Name" type="text" name="fullname" value ="<?php echo $row["full_name"]; ?>" required>
+        <input placeholder="H/P No" type="text" name="hpno" value ="<?php echo $row["hp_no"]; ?>">
+        <input placeholder="Address" type="text" name="address" value ="<?php echo $row["address"]; ?>">
+        <input placeholder="Website/Github URL" type="text" name="website" value ="<?php echo $row["website"]; ?>">
+        <input placeholder="LinkedIn URL" type="text" name="linkedin" value ="<?php echo $row["linkedin"]; ?>">
+        <input placeholder="Twitter/FB URL" type="text" name="twtnfb" value ="<?php echo $row["twitter_fb"]; ?>">
+        <input placeholder="Company" type="text" name="company" value ="<?php echo $row["company"]; ?>">
+
+        <!-- Skill Field Goes Here -->
+        
+        <input placeholder="email" type="text" name="email" value="<?php echo $row["email"]; ?>" readonly>
+
+        <?php } //end tag of while loop for searching DB data ?> 
 
 		<?php  //Success Message
-            if(isset($addSuccess)){
-                if($addSuccess){
+            if(isset($saveSuccess)){
+                if($saveSuccess){
                     echo "<div class=\"alert alert-success\">
-                            <strong>Success!</strong> You have added a new contact!
+                            <strong>Success!</strong> Your information has been saved!
                         </div>";
-                }else if(isset($isEmailExist)){   //Email Exist Message
-                    if($isEmailExist){
-                        echo "<div class=\"alert alert-danger\">
-								<strong>Email already exists! Please, try another email.</strong>
-							</div>";
-                    }
                 }
             }
         ?>
 		
-		<input class="btn btn-success" style="float:center;margin-left:149px;width:100px;font-size:18px;" type="submit" value="Save" name="submitCreateForm">
-	</form>
+		<input class="btn btn-success" style="float:center;margin-left:400px;width:100px;font-size:18px;" type="submit" value="Save" name="saveUserData">
+    </center>
+  </form>
   </center>
+  <!--****************************************************************-->
+  <!--****************************************************************-->
+  <!--****************************************************************-->
 
-
-
-    <!--********************* Change Password *********************-->  
+    <!-- ********************* CHANGE PASSWORD ********************* -->  
+    <!-- ********************* CHANGE PASSWORD ********************* --> 
+    <!-- ********************* CHANGE PASSWORD ********************* --> 
     <center >
     <form style="margin:20px;border-style:solid;border-color:#BDBDBD;border-width:2px;border-radius:5px;" method="post">
       <h1 style="margin-left:20px;">Change Password</h1><br>
         <!-- Code for avoiding data duplication -->
-        <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
+        <?php 
+            $_SESSION['csrf_change_password'] = base64_encode(openssl_random_pseudo_bytes(32));
+        ?>
+        <input type="hidden" name="csrf_change_password" value="<?php echo $_SESSION['csrf_change_password'] ?>">    
         
-        <input placeholder="Current Password" type="password" name="address" value ="">
-        <input placeholder="New Password" type="password" name="website" value ="">
-        <input placeholder="Confirm Password" type="password" name="website" value ="">
-
+        <input placeholder="Current Password" type="password" name="currentPassword" value ="">
+        <input placeholder="New Password" type="password" name="newPassword" value ="">
+        <input placeholder="Confirm Password" type="password" name="confirmPassword" value ="">
+        <input class="btn btn-success" style="float:center;margin-left:59px;width:100px;font-size:18px;" type="submit" value="Save" name="changePasswordForm">
 		<?php  //Success Message
-            if(isset($addSuccess)){
-                if($addSuccess){
+            if(isset($changePasswordSuccess)){
+                if($changePasswordSuccess){
                     echo "<div class=\"alert alert-success\">
-                            <strong>Success!</strong> You have added a new contact!
+                            <strong>Success!</strong> You have changed the password!
                         </div>";
-                }else if(isset($isEmailExist)){   //Email Exist Message
-                    if($isEmailExist){
-                        echo "<div class=\"alert alert-danger\">
-								<strong>Email already exists! Please, try another email.</strong>
-							</div>";
-                    }
+                }
+            }
+
+            //Failure Message
+            if(isset($changePasswordFailure)){
+                if($changePasswordFailure){
+                    echo "<div class=\"alert alert-danger\">
+                            <strong>Sorry!</strong> Any of the passwords doesn't match. Please try again!
+                        </div>";
                 }
             }
         ?>
-		
-		<input class="btn btn-success" style="float:center;margin-left:149px;width:100px;font-size:18px;" type="submit" value="Save" name="submitCreateForm">
 	</form>
   </center>
   <!-- **********************************************************-->
 
-
-
-  <!-- ****************** Session Timeout **************** -->
+  <!-- **************************** SESSION TIMEOUT ********************* -->
+  <!-- **************************** SESSION TIMEOUT ********************* -->
+  <!-- **************************** SESSION TIMEOUT ********************* -->
   <?php
   //Retrieving Session duration from user table
     $sql_session_duration = "SELECT session_duration ";
@@ -195,6 +325,8 @@
 	</form>
   </center>
   <!--*************************************************************************-->
+
+
 <br><br>
 
     <!-- Footer code goes here -->
