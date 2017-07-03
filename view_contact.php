@@ -52,7 +52,7 @@
     
     <br>
     <center>
-    <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;background-color:#127E92;">View Contacts</a>
+    <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;background-color:#127E92;border-color:#127E92">View Contacts</a>
     <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;">Create New Contact</a>
     <a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px;">Skill Fields</a>
     </center>    

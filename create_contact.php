@@ -153,10 +153,10 @@
     <br>
     <center>
     <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;">View Contacts</a>
-    <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;background-color:#127E92;">Create New Contact</a>
+    <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;background-color:#127E92;border-color:#127E92;">Create New Contact</a>
     <a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px;">Skill Fields</a>
     </center>  
- <center>  
+	<center>  
      <br><br>
 	 
 	
@@ -210,7 +210,7 @@
             }
         ?>
 		
-		<input class="btn btn-success" style="float:right;margin-top:0px;margin-right:25px;width:100px;font-size:18px;" type="submit" value="Submit" name="submitCreateForm">
+		<input class="btn btn-success" style="float:right;margin-top:0px;margin-right:25px;width:100px;height:40px;font-size:18px;" type="submit" value="Submit" name="submitCreateForm">
 	</form>
      <br><br><br><br>
      

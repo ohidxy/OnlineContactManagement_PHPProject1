@@ -1,5 +1,5 @@
-<br>
-    <p><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
+
+    <p style="margin-top:5px;"><strong>Welcome, <?php echo $_SESSION["fullname"]; ?></strong></p>
     
   <ul class="nav nav-pills nav-justified">
     <li class="<?php echo $isViewContactActive; ?>"><a href="view_contact.php">CONTACTS</a></li>

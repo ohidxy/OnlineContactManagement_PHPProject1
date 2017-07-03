@@ -144,9 +144,9 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
     <?php include("menu_navigation.php"); ?>
     <br>
     <center>
-    <a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;">View Contacts</a>
-    <a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;">Create New Contact</a>
-    <a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px; background-color:#127E92;">Skill Fields</a>
+		<a class="btn btn-success btn-md" href="view_contact.php" style="width:150px;">View Contacts</a>
+		<a class="btn btn-success btn-md" href="create_contact.php" style="width:150px;">Create New Contact</a>
+		<a class="btn btn-success btn-md" href="skill_fields.php" style="width:150px; background-color:#127E92;border-color:#127E92;">Skill Fields</a>
     </center> 
     
     
@@ -160,7 +160,7 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
         <input type="hidden" name="csrf_add_field" value="<?php echo $_SESSION['csrf_add_field'] ?>"> 
         
         <input type="text" name="skillfield" placeholder="Enter a new skill field here...." required>
-        <input class="btn btn-success" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submit">
+        <input class="btn btn-success" style="margin-top:0px;width:100px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Submit" name="submit">
         <?php
             if(isset($skillFieldAdded)){
                 if($skillFieldAdded){
@@ -195,7 +195,7 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
         ?>
         <input type="text" name="newSkillFieldName" placeholder="Edit the skill field...." required>
         
-        <input class="btn btn-success"  style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Update" name="UpdateSkillFieldName">
+        <input class="btn btn-success"  style="margin-top:0px;width:100px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="Update" name="UpdateSkillFieldName">
         
         <!--Success Message  -->
         <?php
@@ -233,7 +233,7 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
             echo "<\select>";
         ?>
         
-        <input class="btn btn-danger" style="margin-top:0px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="DELETE" name="deleteSkill">
+        <input class="btn btn-danger" style="margin-top:0px;width:100px;margin-right:0px;font-size:18px;height:36px;" type="submit" value="DELETE" name="deleteSkill">
         
         <?php
             if(isset($deleteSuccess)){

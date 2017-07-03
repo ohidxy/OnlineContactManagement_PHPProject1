@@ -132,7 +132,7 @@
                        $stmt->execute();
                        $stmt->close();
                        $changePasswordSuccess = true;
-                }else{
+                }   else{
                     $changePasswordFailure = true;
                 }
           }
@@ -218,7 +218,7 @@
             }
         ?>
 		
-		<input class="btn btn-success" style="float:center;margin-left:400px;width:100px;font-size:18px;" type="submit" value="Save" name="saveUserData">
+		<input class="btn btn-success" style="float:center;margin-left:400px;width:100px;height:30px;font-size:18px;" type="submit" value="Save" name="saveUserData">
     </center>
   </form>
   </center>
@@ -241,7 +241,7 @@
         <input placeholder="Current Password" type="password" name="currentPassword" value ="">
         <input placeholder="New Password" type="password" name="newPassword" value ="">
         <input placeholder="Confirm Password" type="password" name="confirmPassword" value ="">
-        <input class="btn btn-success" style="float:center;margin-left:59px;width:100px;font-size:18px;" type="submit" value="Save" name="changePasswordForm">
+        <input class="btn btn-success" style="float:center;margin-left:59px;width:100px;height:30px;font-size:18px;" type="submit" value="Save" name="changePasswordForm">
 		<?php  //Success Message
             if(isset($changePasswordSuccess)){
                 if($changePasswordSuccess){
@@ -310,7 +310,7 @@
             <option <?php echo isSelected(120); ?> value="120">2 Hours</option>
         </select>
         
-        	<input class="btn btn-success" style="float:center;margin-left:149px;width:100px;font-size:18px;" type="submit" value="Save" name="submitSessionForm">
+        	<input class="btn btn-success" style="float:center;margin-left:149px;width:100px;height:30px;font-size:18px;" type="submit" value="Save" name="submitSessionForm">
 		<?php  //Success Message
             if(isset($sessionSaveSuccess)){
                 if($sessionSaveSuccess){

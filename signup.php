@@ -99,16 +99,29 @@
     $_sqlDefaultSkills = "INSERT INTO ".$processedEmail."_skill (";
     $_sqlDefaultSkills .= "skill_field_name) VALUES ('PHP Developer'), ('C# Developer'), ('Python Developer'), ('Database Expert'), ('JavaScript Developer'), ('Java Developer')";
     
+
+    $_sqlTaskTable = "CREATE TABLE ".$processedEmail."_task (";
+    $_sqlTaskTable .= "task_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ";
+    $_sqlTaskTable .= "task_title TEXT NOT NULL, ";
+    $_sqlTaskTable .= "due_date date NOT NULL, ";    
+    $_sqlTaskTable .= "task_description TEXT NOT NULL, ";
+    $_sqlTaskTable .= "is_solved TINYINT NOT NULL ";
+    $_sqlTaskTable .= ")";   
         
     if($loginAble){  //Checks whether the form matches all validation.
         if($mysqli->query($_sql)===true){
             //Creating information table for New user
             $create_table = $mysqli->query($_sqlTable);
+
             //Creating table for skill fields
             $create_skilltable = $mysqli->query($_sqlSkillTable);
+
             //Adding Default Skills to skill fields
             $create_defaultSkills = $mysqli->query($_sqlDefaultSkills);
-            
+
+            //Creating Task Table
+            $create_sqlTaskTable = $mysqli->query($_sqlTaskTable);
+
             $message = "Registration Successful!";
         }else{
             echo "Not connected. Error: ".$mysqli->error;

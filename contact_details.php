@@ -215,9 +215,9 @@ else{
         <br><br><br>
 		
 		<!-- code for DELETE BUTTON -->
-		<input class="btn btn-danger" style="float:right;margin-top:0px;margin-right:25px;font-size:13px;height:28px;" type="submit" value="DELETE" name="deleteContact">
+		<input class="btn btn-danger" style="width:60px;height:22px;float:right;margin-top:0px;margin-right:25px;font-size:13px;height:28px;" type="submit" value="DELETE" name="deleteContact">
        <!-- code for SAVE BUTTON -->
-		<input class="btn btn-success" style="margin-right:5px;float:right;margin-bottom:20px;width:100px;font-size:18px;" type="submit" value="Save" name="saveForm">
+		<input class="btn btn-success" style="width:100px;height:30px;margin-right:5px;float:right;margin-bottom:20px;width:100px;font-size:18px;" type="submit" value="Save" name="saveForm">
 	</form>
 	
 	<?php  //Success Message
