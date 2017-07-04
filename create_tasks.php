@@ -22,10 +22,10 @@
         $processedEmail = $_SESSION["email"];
         $processedEmail = str_replace("@","",$processedEmail);
         $processedEmail = str_replace(".","",$processedEmail);
-        $task_table = $processedEmail."_task";  
-		
-		//When user Updates Task information
-		if(isset($_POST["saveTask"])){
+        
+        $task_table = $processedEmail."_task";    
+
+        if(isset($_POST["createTask"])){
             if(Token::checkToken($_POST["csrf_token"])){
                 $task_title = $_POST["tasktitle"];
                 $task_title = $mysqli->real_escape_string($task_title);
@@ -42,33 +42,26 @@
                 $task_description = htmlspecialchars($task_description);
                 $task_description = str_replace('\r\n','', $task_description);
 
-                $task_status = $_POST["statusDropDown"];
-                $task_status = $mysqli->real_escape_string($task_status);
-
-                $sqlCreateTask = "UPDATE $task_table ";
-                $sqlCreateTask.= "SET task_title = ?, due_date = ?, task_description = ?, is_solved = ? ";
-                $sqlCreateTask.= "WHERE task_id =". $_POST["taskid"];
+                $sqlCreateTask = "INSERT INTO $task_table ";
+                $sqlCreateTask.= "(task_title, due_date, task_description, is_solved) ";
+                $sqlCreateTask.= "VALUES (?, ?, ?, 0) ";
 
                 $stmt = $mysqli->prepare($sqlCreateTask);
-                $stmt->bind_param("ssss", $task_title, $due_date, $task_description, $task_status);
+                $stmt->bind_param("sss", $task_title, $due_date, $task_description);
                 $stmt->execute();
                 $stmt->close();
 
-                $saveSuccess = true;
+                $addSuccess = true;
             }
         }
 
-        $formDisplay ="";
-        if(isset($_POST["deleteTask"])){
+        /*if(isset($_POST["deleteTask"])){
             if(Token::checkToken($_POST["csrf_token"])){
-                $sqlDeleteTask = "DELETE from $task_table WHERE task_id =". $_POST["taskid"];
-                $deleteQuery = $mysqli->query($sqlDeleteTask);
-
-                $deleteSuccess = true;
-                $formDisplay = "display:none;";
+                $sqlDeleteTask = "DELETE * FROM $task_table"
             }
-        }
+        }*/
 ?>
+
 
 
 <!DOCTYPE html>
@@ -100,76 +93,52 @@
     <?php include("menu_navigation.php"); ?>
     <br>
     <center>
-    <a class="btn btn-success btn-md" href="tasks.php" style="width:150px;background-color:#127E92;border-color:#127E92;">View All Tasks</a>
-    <a class="btn btn-success btn-md" href="create_tasks.php" style="width:150px;">Create New Task</a>
+    <a class="btn btn-success btn-md" href="tasks.php" style="width:150px;">View All Tasks</a>
+    <a class="btn btn-success btn-md" href="create_tasks.php" style="width:150px;background-color:#127E92;border-color:#127E92;">Create New Task</a>
     </center> 
-    <br><br>
-    <center>
 
 
-    <?php 
-        $sqlViewTaskDetails = "SELECT * from $task_table WHERE task_id = ".$_GET["taskid"];
-        $createsqlViewTaskDetails = $mysqli->query($sqlViewTaskDetails);
-
-        while($row = $createsqlViewTaskDetails->fetch_assoc()){
-    ?>
-    <form style="width:550px;margin-left:20px;<?php echo $formDisplay; ?>" method="post" align="left">
+    <!--************************************* Create Tasks Form *********************-->
+    <center><br>
+    <h1>Create a New Task</h1>
+    <form style="width:550px;margin-left:20px;" method="post" align="left">
         <!-- Code for avoiding data duplication -->
         <input type="hidden" name="csrf_token" value="<?php echo Token::generateToken(); //Generating the Token  ?>">    
 
-        <input type ="hidden" name="taskid" value="<?php echo $row["task_id"]; ?>">
         Task Title:<br>
-        <input style="width:440px;" placeholder="Maximum 200 Characters" type="text" name="tasktitle" value ="<?php echo $row["task_title"]; ?>" maxlength="200" required><br>
+        <input style="width:440px;" placeholder="Maximum 200 Characters" type="text" name="tasktitle" value ="" maxlength="200" required><br>
 
         Due Date:<br>
-        <input placeholder="Due Date" type="date" name="duedate" value ="<?php echo $row["due_date"]; ?>" required><br>
-        Status:<br>
-        <select name="statusDropDown">
-            <option value ="0" <?php echo $value = ($row["is_solved"]==0)?"selected":""; ?> >Pending</option>
-            <option value ="1" <?php echo $value = ($row["is_solved"]==0)?"":"selected";?>>Done</option>
-        </select>
-        <br>
+        <input placeholder="Due Date" type="date" name="duedate" value ="" required><br>
+
         Task Description:<br>
-        <textarea name="taskdescription" maxlength="1000"><?php echo $row["task_description"]; ?></textarea>  
+        <textarea name="taskdescription" maxlength="1000">
+        
+        </textarea>  
 
         <br>
         <!--PHP COde for Selecting Categories -->
-        <input class="btn btn-success" style="width:70px;height:25px;float:right;margin-top:0px;font-size:15px;margin-right:110px;" type="submit" value="Delete" name="deleteTask">
-        <input class="btn btn-success" style="width:100px;height:30px;float:right;margin-top:0px;margin-right:10px;font-size:18px;" type="submit" value="Save" name="saveTask">
+        
+        <?php 
+            
+        ?>
+        <input class="btn btn-success" style="width:100px;height:30px;float:right;margin-top:0px;margin-right:105px;width:100px;font-size:18px;" type="submit" value="Submit" name="createTask">
 		<br><br>
-	</form>
- 
-    <?php
-        //Finishing of while loop of mysqli fetch assoc function
-        } 
-    ?>
-
-    <?php  //Save Success Message
-            if(isset($saveSuccess)){
-                if($saveSuccess){
+        <?php  //Success Message
+            if(isset($addSuccess)){
+                if($addSuccess){
                     echo "<div class=\"alert alert-success\" align=\"center\">
-                            <strong>Success!</strong> You have saved the task!
-                        </div>";
-                }
-            }
-
-            //Delete Task Success Message
-            if(isset($deleteSuccess)){
-                if($deleteSuccess){
-                    echo "<div class=\"alert alert-danger\" align=\"center\">
-                            <strong>Success!</strong> You have deleted the task!
+                            <strong>Success!</strong> You have added a new Task!
                         </div>";
                 }
             }
         ?>
+		
+		
+	</form>
     </center>
+    <!-- ********************************************************* -->
 
-
-    
-	
-
-
-<br><br>
 
     <!-- Footer code goes here -->
      <?php include("footer.php"); ?>
