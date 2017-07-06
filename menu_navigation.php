@@ -5,7 +5,7 @@
     <li class="<?php echo $isViewContactActive; ?>"><a href="view_contact.php">CONTACTS</a></li>
     
     <li class="<?php echo $isTasksActive; ?>"><a href="tasks.php">TASKS</a></li>    
-    <li class="<?php ?>"><a href="">NOTES</a></li>  
+    <!-- <li class="<?php ?>"><a href="">NOTES</a></li>  -->
     <li class="<?php echo $isAccountActive; ?>"><a href="account.php">Account</a></li>  
       
     <li><a href="logout.php">Log Out</a></li>

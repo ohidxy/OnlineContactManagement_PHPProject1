@@ -25,7 +25,7 @@
         
         $skillFieldTable = $processedEmail."_skill";
         
-        
+        //POST for adding a skill
         if(isset($_POST['submit'])){
             
             if($_POST["csrf_add_field"] == $_SESSION["csrf_add_field"])
@@ -40,15 +40,22 @@
                 $sql4 = "INSERT INTO $skillFieldTable (skill_field_name) ";
                 $sql4 .= "values ( ? )";
                 
-                //Prepare statement for entering new SKILL FIELD
-                $stmt = $mysqli->prepare($sql4);
-                $stmt->bind_param("s", $skillFieldName);
-                $stmt->execute();
-                $stmt->close();
-                
-                $resultSkill = $mysqli->query($sql4);
-                $skillFieldAdded = true;
-         
+                // *************** Checking if the skill already exists *********** //
+                $sqlCheckSkillMatch = "SELECT * FROM $skillFieldTable WHERE skill_field_name = '$skillFieldName'";
+                $CheckSkillMatchQuery = $mysqli->query($sqlCheckSkillMatch); 
+
+                if($mysqli->affected_rows==0){
+                    //******************** Prepare statement for entering new SKILL FIELD *************** //
+                    $stmt = $mysqli->prepare($sql4);
+                    $stmt->bind_param("s", $skillFieldName);
+                    $stmt->execute();
+                    $stmt->close();
+                    
+                    $resultSkill = $mysqli->query($sql4);
+                    $skillFieldAdded = true;
+                }else{
+                    $skillFieldExist = true;
+                }
             }
         }
 
@@ -62,21 +69,33 @@
                 $newSkillName = ucwords($newSkillName);
                 $newSkillName = htmlspecialchars($newSkillName);
                 
-                // Query for editing a skill name 
-$_sql7 = "UPDATE $skillFieldTable SET skill_field_name = ? WHERE skill_field_name = ? ";
-                $stmt = $mysqli->prepare($_sql7);
-                $stmt->bind_param("ss", $newSkillName, $selectedSkill);
-                $stmt->execute();
-                $stmt->close();
+                
 
-                //Query for updating in Contact Table'
-$_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_field = ? ";
-                $stmt = $mysqli->prepare($_sqlUpdateCntctTbl);
-                $stmt->bind_param("ss", $newSkillName, $selectedSkill);
-                $stmt->execute();
-                $stmt->close();
+                // *************** Checking if the skill already exists *********** //
+                $sqlCheckSkillMatch = "SELECT * FROM $skillFieldTable WHERE skill_field_name = '$newSkillName'";
+                $CheckSkillMatchQuery = $mysqli->query($sqlCheckSkillMatch);
 
-                $success = true; 
+
+                if($mysqli->affected_rows==0){
+                    // Query for editing a skill name 
+                    $_sql7 = "UPDATE $skillFieldTable SET skill_field_name = ? WHERE skill_field_name = ? ";
+                    $stmt = $mysqli->prepare($_sql7);
+                    $stmt->bind_param("ss", $newSkillName, $selectedSkill);
+                    $stmt->execute();
+                    $stmt->close();
+
+                    //Query for updating in Contact Table'
+                    $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_field = ? ";
+                    $stmt = $mysqli->prepare($_sqlUpdateCntctTbl);
+                    $stmt->bind_param("ss", $newSkillName, $selectedSkill);
+                    $stmt->execute();
+                    $stmt->close();
+
+                    $success = true;   
+                }else{
+                    $skillFieldExist1 = true;
+                }
+                
             }
         }
         
@@ -152,6 +171,7 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
     
     <br>
 <center>
+    <!--******************************************* Adding a new skill ****************************** -->
     <h1>Add a new Skill Field</h1><br>
     <form action="skill_fields.php" method="post">
         <?php 
@@ -169,12 +189,23 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
                         </div>";
                 }
             }
+
+            
+            if(isset($skillFieldExist)){
+                if($skillFieldExist){
+                    echo "<div class=\"alert alert-danger\">
+                            <strong>Sorry!</strong> The Skill Field already exists. Try a new one! 
+                        </div>";
+                }
+            }
+        
         ?>
         
     </form>
     
 
     <br><br>
+    <!--********************************************* Editing a skill ******************************** -->
     <h1>Edit a current Skill Field</h1><br>    
 
     <form action="skill_fields.php" method="post">
@@ -208,11 +239,19 @@ $_sqlUpdateCntctTbl = "UPDATE $processedEmail SET skill_field = ? WHERE skill_fi
                         </div>";
                 }
             }
+
+             if(isset($skillFieldExist1)){
+                if($skillFieldExist1){
+                    echo "<div class=\"alert alert-danger\">
+                            <strong>Sorry!</strong> The Skill Field already exists. Try a new one! 
+                        </div>";
+                }
+            }
         ?>
     </form>
     
     
-    <!-- Delete a skill field -->
+    <!--****************************************** Delete a skill field *****************************************-->
     <br><br>
     <h1>Delete a Skill Field</h1>
     <br>
